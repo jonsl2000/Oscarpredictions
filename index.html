@@ -7,34 +7,27 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --gold:#c9a84c; --gold-l:#e8cc7a; --gold-d:#6b5520;
-  --black:#080706; --card:#111009; --card2:#181410;
-  --border:#2a2218; --text:#e8dcc8; --muted:#6a5e4e;
-  --red:#9b2335; --blue:#5ba3cc; --green:#4db87a;
+:root{
+  --gold:#c9a84c;--gold-l:#e8cc7a;--gold-d:#6b5520;
+  --black:#080706;--card:#111009;--card2:#181410;
+  --border:#2a2218;--text:#e8dcc8;--muted:#6a5e4e;
+  --red:#9b2335;--blue:#5ba3cc;--green:#4db87a;--green-d:#2d7a4f;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{
-  background:var(--black);color:var(--text);
-  font-family:'DM Mono',monospace;min-height:100vh;
+body{background:var(--black);color:var(--text);font-family:'DM Mono',monospace;min-height:100vh;
   background-image:radial-gradient(ellipse 60% 40% at 10% 0%,rgba(201,168,76,.07) 0%,transparent 60%),
-    radial-gradient(ellipse 40% 60% at 90% 100%,rgba(155,35,53,.05) 0%,transparent 60%);
-}
-body::after{
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
-  opacity:.5;
-}
-.screen{display:none;} .screen.active{display:block;}
+  radial-gradient(ellipse 40% 60% at 90% 100%,rgba(155,35,53,.05) 0%,transparent 60%);}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");opacity:.5;}
+.screen{display:none;}.screen.active{display:block;}
 
 /* HEADER */
 .hdr{text-align:center;padding:2.5rem 1.5rem 1.5rem;border-bottom:1px solid var(--border);
   background:linear-gradient(180deg,rgba(201,168,76,.05) 0%,transparent 100%);}
 .hdr-pre{font-size:.58rem;letter-spacing:.5em;color:var(--gold-d);margin-bottom:1rem;}
 .hdr h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,7vw,4.5rem);
-  font-weight:900;color:var(--gold);text-shadow:0 0 60px rgba(201,168,76,.25);
-  letter-spacing:.04em;line-height:1;}
+  font-weight:900;color:var(--gold);text-shadow:0 0 60px rgba(201,168,76,.25);letter-spacing:.04em;line-height:1;}
 .hdr-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;
   color:var(--muted);margin-top:.4rem;letter-spacing:.2em;}
 .hdr-badge{display:inline-flex;align-items:center;gap:.5rem;margin-top:.8rem;
@@ -44,16 +37,14 @@ body::after{
 /* LAYOUT */
 .wrap{max-width:520px;margin:0 auto;padding:2rem 1.5rem;}
 .field{margin-bottom:1.25rem;}
-.label{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
-  margin-bottom:.45rem;display:block;}
+.label{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:.45rem;display:block;}
 
 /* INPUTS */
 input[type=text],input[type=password]{
   width:100%;background:var(--card2);border:1px solid var(--border);
   color:var(--text);font-family:'DM Mono',monospace;font-size:.88rem;
   padding:.75rem 1rem;outline:none;transition:border-color .2s;
-  -webkit-appearance:none;border-radius:0;letter-spacing:.05em;
-}
+  -webkit-appearance:none;border-radius:0;letter-spacing:.05em;}
 input:focus{border-color:var(--gold-d);}
 input::placeholder{color:var(--muted);}
 
@@ -67,23 +58,9 @@ input::placeholder{color:var(--muted);}
 .btn-gold{background:var(--gold);color:var(--black);border-color:var(--gold);font-weight:500;}
 .btn-gold:hover{background:var(--gold-l);border-color:var(--gold-l);}
 .btn-red{background:var(--red);color:#fff;border-color:var(--red);}
-.btn-red:hover{filter:brightness(1.1);}
-.btn-green{background:#2d7a4f;color:#fff;border-color:#2d7a4f;}
-.btn-green:hover{filter:brightness(1.1);}
+.btn-green{background:var(--green-d);color:#fff;border-color:var(--green-d);}
 .btn-full{width:100%;display:block;}
 .btn-sm{padding:.38rem .85rem;font-size:.62rem;}
-
-/* ROOM CODE */
-.code-display{
-  font-family:'Playfair Display',serif;font-size:3.5rem;font-weight:900;
-  color:var(--gold);letter-spacing:.3em;text-align:center;
-  padding:1.5rem;background:rgba(201,168,76,.06);border:1px solid var(--gold-d);
-  margin:1rem 0;text-shadow:0 0 30px rgba(201,168,76,.2);
-}
-.code-input{
-  text-align:center;font-size:1.5rem;letter-spacing:.4em;text-transform:uppercase;
-  font-weight:500;
-}
 
 /* ROLE TOGGLE */
 .role-toggle{display:flex;border:1px solid var(--border);margin-bottom:1.5rem;overflow:hidden;}
@@ -92,30 +69,32 @@ input::placeholder{color:var(--muted);}
   font-family:'DM Mono',monospace;transition:all .2s;}
 .role-btn.active{background:rgba(201,168,76,.12);color:var(--gold);}
 
-/* PLAYER LIST */
+/* CODE */
+.code-display{font-family:'Playfair Display',serif;font-size:3.5rem;font-weight:900;
+  color:var(--gold);letter-spacing:.3em;text-align:center;
+  padding:1.5rem;background:rgba(201,168,76,.06);border:1px solid var(--gold-d);
+  margin:1rem 0;text-shadow:0 0 30px rgba(201,168,76,.2);}
+.code-input{text-align:center;font-size:1.5rem;letter-spacing:.4em;text-transform:uppercase;font-weight:500;}
+
+/* PLAYER GRID */
 .player-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.6rem;margin-top:1rem;}
-.player-chip{background:var(--card2);border:1px solid var(--border);
-  padding:.65rem .9rem;display:flex;align-items:center;gap:.6rem;}
+.player-chip{background:var(--card2);border:1px solid var(--border);padding:.65rem .9rem;display:flex;align-items:center;gap:.6rem;}
 .pchip-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 .pchip-name{font-size:.78rem;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.pchip-status{font-size:.6rem;color:var(--muted);}
+.pchip-status{font-size:.58rem;color:var(--muted);}
 .player-chip.done .pchip-status{color:var(--green);}
 
-/* BRACKET TOP BAR */
-.bracket-bar{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:.75rem 1.25rem;border-bottom:1px solid var(--border);
-  flex-wrap:wrap;gap:.6rem;position:sticky;top:0;z-index:100;
-  background:rgba(8,7,6,.92);backdrop-filter:blur(10px);
-}
+/* BRACKET BAR */
+.bracket-bar{display:flex;align-items:center;justify-content:space-between;
+  padding:.75rem 1.25rem;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:.6rem;
+  position:sticky;top:0;z-index:100;background:rgba(8,7,6,.92);backdrop-filter:blur(10px);}
 .bar-player{display:flex;align-items:center;gap:.6rem;}
 .bar-dot{width:9px;height:9px;border-radius:50%;}
 .bar-name{font-size:.8rem;}
 .bar-role{font-size:.58rem;color:var(--gold);}
 .mode-tabs{display:flex;border:1px solid var(--border);overflow:hidden;}
 .mode-tab{padding:.42rem .85rem;font-size:.62rem;letter-spacing:.08em;cursor:pointer;
-  background:transparent;border:none;color:var(--muted);font-family:'DM Mono',monospace;
-  transition:all .2s;white-space:nowrap;}
+  background:transparent;border:none;color:var(--muted);font-family:'DM Mono',monospace;transition:all .2s;white-space:nowrap;}
 .mode-tab.act-p{background:rgba(201,168,76,.15);color:var(--gold);}
 .mode-tab.act-s{background:rgba(91,163,204,.12);color:var(--blue);}
 .prog-wrap{display:flex;align-items:center;gap:.6rem;}
@@ -124,18 +103,14 @@ input::placeholder{color:var(--muted);}
 .prog-lbl{font-size:.6rem;color:var(--muted);}
 
 /* CAT GRID */
-.cats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
-  gap:1.1rem;padding:1.25rem;}
+.cats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.1rem;padding:1.25rem;}
 .cat-card{background:var(--card);border:1px solid var(--border);position:relative;overflow:hidden;}
-.cat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,var(--gold-d),transparent);}
-.cat-head{padding:.55rem .85rem;border-bottom:1px solid var(--border);
-  display:flex;justify-content:space-between;align-items:center;}
+.cat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--gold-d),transparent);}
+.cat-head{padding:.55rem .85rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
 .cat-name{font-family:'Cormorant Garamond',serif;font-size:.9rem;font-weight:600;color:var(--gold);}
 .cat-tick{font-size:.75rem;color:var(--green);}
 .nom-list{padding:.4rem;}
-.nom{display:flex;align-items:center;gap:.45rem;padding:.38rem .45rem;
-  cursor:pointer;border:1px solid transparent;transition:all .13s;}
+.nom{display:flex;align-items:center;gap:.45rem;padding:.38rem .45rem;cursor:pointer;border:1px solid transparent;transition:all .13s;}
 .nom:hover{background:rgba(255,255,255,.025);border-color:var(--border);}
 .nom-name{font-size:.73rem;color:var(--text);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .pdots{display:flex;gap:3px;flex-shrink:0;}
@@ -147,19 +122,16 @@ input::placeholder{color:var(--muted);}
 .nom.sel-b{background:linear-gradient(90deg,rgba(201,168,76,.07),rgba(91,163,204,.06));border-color:rgba(201,168,76,.3);}
 
 /* SUBMIT STICKY */
-.sticky-submit{position:sticky;bottom:0;padding:1rem 1.5rem 1.5rem;
+.sticky-sub{position:sticky;bottom:0;padding:1rem 1.5rem 1.5rem;
   background:linear-gradient(to top,var(--black) 55%,transparent);
   display:flex;justify-content:center;gap:.75rem;flex-wrap:wrap;pointer-events:none;}
-.sticky-submit>*{pointer-events:all;}
+.sticky-sub>*{pointer-events:all;}
 
 /* CEREMONY */
 .cer-layout{display:flex;min-height:calc(100vh - 160px);}
-.cer-sidebar{width:260px;flex-shrink:0;border-right:1px solid var(--border);
-  overflow-y:auto;position:sticky;top:0;max-height:100vh;}
-.sb-head{padding:.65rem 1rem;border-bottom:1px solid var(--border);
-  font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);}
-.cat-item{padding:.55rem 1rem;border-bottom:1px solid rgba(42,34,24,.4);
-  cursor:pointer;transition:background .15s;display:flex;align-items:center;gap:.5rem;}
+.cer-sidebar{width:260px;flex-shrink:0;border-right:1px solid var(--border);overflow-y:auto;position:sticky;top:0;max-height:100vh;}
+.sb-head{padding:.65rem 1rem;border-bottom:1px solid var(--border);font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);}
+.cat-item{padding:.55rem 1rem;border-bottom:1px solid rgba(42,34,24,.4);cursor:pointer;transition:background .15s;display:flex;align-items:center;gap:.5rem;}
 .cat-item:hover{background:rgba(255,255,255,.02);}
 .cat-item.act{background:rgba(201,168,76,.08);border-left:2px solid var(--gold);}
 .cat-item.done{opacity:.5;}
@@ -167,13 +139,11 @@ input::placeholder{color:var(--muted);}
 .cat-item-icon{font-size:.65rem;}
 .cer-main{flex:1;padding:1.75rem;overflow-y:auto;}
 
-/* REVEAL STAGE */
-.rev-title{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3.5vw,2.2rem);
-  color:var(--gold);margin-bottom:.25rem;}
+/* REVEAL */
+.rev-title{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3.5vw,2.2rem);color:var(--gold);margin-bottom:.25rem;}
 .rev-sub{font-size:.65rem;color:var(--muted);letter-spacing:.2em;margin-bottom:1.5rem;}
 .nom-rows{display:flex;flex-direction:column;gap:.45rem;margin-bottom:1.5rem;}
-.nom-row{background:var(--card);border:1px solid var(--border);padding:.8rem 1rem;
-  position:relative;overflow:hidden;transition:all .3s;}
+.nom-row{background:var(--card);border:1px solid var(--border);padding:.8rem 1rem;position:relative;overflow:hidden;transition:all .3s;}
 .nom-row::before{content:'';position:absolute;top:0;left:0;bottom:0;width:2px;background:var(--border);}
 .nom-film{font-size:.85rem;margin-bottom:.3rem;}
 .picks-row{display:flex;gap:.4rem;flex-wrap:wrap;}
@@ -185,18 +155,15 @@ input::placeholder{color:var(--muted);}
 .nom-row.winner{border-color:var(--gold);background:linear-gradient(90deg,rgba(201,168,76,.1),rgba(201,168,76,.03));}
 .nom-row.winner::before{background:var(--gold);width:3px;}
 .crown{position:absolute;right:.75rem;top:.75rem;font-size:1rem;}
-@keyframes revFlash{0%{background:rgba(201,168,76,.25);}100%{background:transparent;}}
+@keyframes revFlash{0%{background:rgba(201,168,76,.3);}100%{background:transparent;}}
 .nom-row.flash{animation:revFlash .7s ease;}
-.locked-msg{text-align:center;padding:2.5rem 1rem;color:var(--muted);font-size:.8rem;
-  border:1px solid var(--border);line-height:1.8;}
+.locked-msg{text-align:center;padding:2.5rem 1rem;color:var(--muted);font-size:.8rem;border:1px solid var(--border);line-height:1.8;}
 
 /* HOST CONTROLS */
 .hctl{margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border);}
 .hctl-label{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:.65rem;}
 .winner-opts{display:flex;flex-wrap:wrap;gap:.4rem;}
-.wopt{padding:.38rem .85rem;font-size:.7rem;cursor:pointer;
-  background:var(--card2);border:1px solid var(--border);color:var(--text);
-  font-family:'DM Mono',monospace;transition:all .18s;}
+.wopt{padding:.38rem .85rem;font-size:.7rem;cursor:pointer;background:var(--card2);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;transition:all .18s;}
 .wopt:hover{border-color:var(--gold-d);color:var(--gold);}
 .wopt.sel{background:rgba(201,168,76,.14);border-color:var(--gold);color:var(--gold);}
 .host-btn-row{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1rem;}
@@ -204,9 +171,7 @@ input::placeholder{color:var(--muted);}
 /* LEADERBOARD */
 .lb{margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border);}
 .lb-title{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--gold);margin-bottom:1rem;}
-.lb-row{display:flex;align-items:center;gap:.9rem;padding:.8rem 1rem;
-  background:var(--card);border:1px solid var(--border);margin-bottom:.4rem;
-  position:relative;overflow:hidden;transition:all .3s;}
+.lb-row{display:flex;align-items:center;gap:.9rem;padding:.8rem 1rem;background:var(--card);border:1px solid var(--border);margin-bottom:.4rem;position:relative;overflow:hidden;transition:all .3s;}
 .lb-bar-bg{position:absolute;left:0;top:0;bottom:0;background:rgba(201,168,76,.04);z-index:0;transition:width .6s;}
 .lb-row>*{position:relative;z-index:1;}
 .lb-rank{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--gold-d);width:1.8rem;text-align:center;}
@@ -216,6 +181,75 @@ input::placeholder{color:var(--muted);}
 .lb-score{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--gold);}
 .lb-of{font-size:.6rem;color:var(--muted);}
 .lb-row.first{border-color:var(--gold);background:rgba(201,168,76,.05);}
+.lb-row.tied{border-color:rgba(91,163,204,.4);}
+.lb-tie-badge{font-size:.58rem;color:var(--blue);border:1px solid rgba(91,163,204,.3);padding:.1rem .4rem;white-space:nowrap;}
+
+/* ══════════════ WINNER CELEBRATION ══════════════ */
+#winner-overlay{
+  position:fixed;inset:0;z-index:5000;
+  background:rgba(8,7,6,.96);
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:2rem;
+}
+#winner-overlay.show{display:flex;}
+.win-pre{font-size:.65rem;letter-spacing:.5em;color:var(--gold-d);margin-bottom:1rem;text-transform:uppercase;}
+.win-title{font-family:'Playfair Display',serif;font-size:clamp(1rem,.5rem + 3vw,1.4rem);
+  color:var(--muted);letter-spacing:.1em;margin-bottom:.5rem;text-transform:uppercase;}
+.win-name{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,8vw,6rem);
+  font-weight:900;color:var(--gold);text-shadow:0 0 80px rgba(201,168,76,.5);
+  line-height:1.1;margin-bottom:1rem;}
+@keyframes winPulse{0%,100%{text-shadow:0 0 80px rgba(201,168,76,.5);}50%{text-shadow:0 0 120px rgba(201,168,76,.8),0 0 200px rgba(201,168,76,.3);}}
+.win-name{animation:winPulse 2s infinite;}
+.win-score{font-size:1rem;color:var(--muted);margin-bottom:.5rem;}
+.win-score span{color:var(--gold);font-family:'Playfair Display',serif;font-size:1.4rem;}
+.win-tied-names{font-size:.8rem;color:var(--blue);margin-bottom:1.5rem;}
+.win-stars{font-size:1.5rem;letter-spacing:.5rem;margin-bottom:1.5rem;}
+#winner-overlay .btn{margin-top:1rem;}
+
+/* ══════════════ TIEBREAKER ══════════════ */
+#tb-overlay{
+  position:fixed;inset:0;z-index:4000;
+  background:rgba(8,7,6,.97);
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  padding:2rem;text-align:center;
+}
+#tb-overlay.show{display:flex;}
+.tb-pre{font-size:.6rem;letter-spacing:.4em;color:var(--red);text-transform:uppercase;margin-bottom:.75rem;}
+.tb-title{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,4vw,2.5rem);color:var(--gold);margin-bottom:.4rem;}
+.tb-players{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin-bottom:1.5rem;}
+.tb-player-chip{display:flex;align-items:center;gap:.4rem;padding:.3rem .75rem;border:1px solid var(--border);font-size:.72rem;}
+.tb-player-chip.active{border-color:var(--gold);color:var(--gold);}
+.tb-player-chip.eliminated{opacity:.3;text-decoration:line-through;}
+.tb-qnum{font-size:.62rem;color:var(--muted);letter-spacing:.2em;margin-bottom:.5rem;}
+.tb-question{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,2.5vw,1.5rem);
+  color:var(--text);line-height:1.6;max-width:600px;margin:0 auto 1.5rem;}
+.tb-options{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;max-width:560px;width:100%;margin:0 auto;}
+.tb-opt{background:var(--card2);border:1px solid var(--border);color:var(--text);
+  font-family:'DM Mono',monospace;font-size:.78rem;padding:.8rem 1rem;
+  cursor:pointer;transition:all .2s;text-align:left;}
+.tb-opt:hover:not(:disabled){border-color:var(--gold-d);background:rgba(201,168,76,.06);}
+.tb-opt:disabled{cursor:not-allowed;}
+.tb-opt.picked{border-color:var(--gold);background:rgba(201,168,76,.12);color:var(--gold);}
+.tb-opt.correct{border-color:var(--green);background:rgba(77,184,122,.12);color:var(--green);}
+.tb-opt.wrong{border-color:var(--red);background:rgba(155,35,53,.1);color:var(--red);}
+.tb-waiting{font-size:.75rem;color:var(--muted);margin-top:1rem;font-style:italic;}
+.tb-result{margin-top:1.5rem;padding:1rem 1.5rem;border:1px solid var(--border);max-width:560px;width:100%;}
+.tb-result-line{font-size:.8rem;margin-bottom:.4rem;display:flex;align-items:center;gap:.6rem;}
+.tb-result-dot{width:7px;height:7px;border-radius:50%;}
+.tb-spectator{font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--muted);
+  font-style:italic;max-width:500px;line-height:1.8;margin-bottom:1.5rem;}
+.tb-host-controls{margin-top:1.5rem;display:flex;gap:.75rem;flex-wrap:wrap;justify-content:center;}
+
+/* MISC */
+.divider{height:1px;background:var(--border);margin:1.25rem 0;}
+.err{color:#e05;font-size:.7rem;margin-top:.5rem;display:none;}
+.info{font-size:.72rem;color:var(--muted);line-height:1.8;margin-bottom:1rem;}
+.flex-between{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.6rem;}
+.all-done-banner{background:rgba(77,184,122,.07);border:1px solid rgba(77,184,122,.25);
+  padding:.65rem 1rem;display:flex;align-items:center;gap:.65rem;font-size:.75rem;color:var(--green);margin-bottom:1.25rem;}
+.session-info{background:var(--card2);border:1px solid var(--border);padding:.75rem 1rem;
+  font-size:.72rem;margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between;}
+.session-code{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--gold);letter-spacing:.2em;}
 
 /* TOAST */
 .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(5rem);
@@ -224,23 +258,9 @@ input::placeholder{color:var(--muted);}
   white-space:nowrap;box-shadow:0 4px 24px rgba(0,0,0,.5);}
 .toast.show{transform:translateX(-50%) translateY(0);}
 
-/* MISC */
-.divider{height:1px;background:var(--border);margin:1.25rem 0;}
-.err{color:#e05;font-size:.7rem;margin-top:.5rem;display:none;}
-.info{font-size:.72rem;color:var(--muted);line-height:1.8;margin-bottom:1rem;}
-.flex-between{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.6rem;}
-.all-done-banner{background:rgba(77,184,122,.07);border:1px solid rgba(77,184,122,.25);
-  padding:.65rem 1rem;display:flex;align-items:center;gap:.65rem;
-  font-size:.75rem;color:var(--green);margin-bottom:1.25rem;}
-.session-info{background:var(--card2);border:1px solid var(--border);padding:.75rem 1rem;
-  font-size:.72rem;margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between;}
-.session-code{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--gold);letter-spacing:.2em;}
-
 /* CONFETTI */
-.confetti-piece{position:fixed;pointer-events:none;z-index:9998;border-radius:1px;
-  animation:cfall 2.5s ease-in forwards;}
-@keyframes cfall{0%{transform:translateY(-20px) rotate(0deg);opacity:1;}
-  100%{transform:translateY(100vh) rotate(720deg);opacity:0;}}
+.confetti-piece{position:fixed;pointer-events:none;z-index:9998;border-radius:1px;animation:cfall 2.5s ease-in forwards;}
+@keyframes cfall{0%{transform:translateY(-20px) rotate(0deg);opacity:1;}100%{transform:translateY(100vh) rotate(720deg);opacity:0;}}
 
 /* ANIM */
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
@@ -248,25 +268,43 @@ input::placeholder{color:var(--muted);}
 .cat-card:nth-child(2n){animation-delay:.04s;}
 .cat-card:nth-child(3n){animation-delay:.08s;}
 
-/* MOBILE */
-@media(max-width:680px){
-  .cer-layout{flex-direction:column;}
-  .cer-sidebar{width:100%;max-height:200px;position:static;}
-  .cats-grid{grid-template-columns:1fr;}
-  .prog-bar{width:50px;}
-}
-
-/* SETUP GUIDE */
+/* SETUP */
 .setup-guide{max-width:680px;margin:3rem auto;padding:2rem 1.5rem;}
 .setup-guide h2{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--gold);margin-bottom:.75rem;}
 .setup-guide p{font-size:.78rem;color:var(--muted);line-height:1.9;margin-bottom:1rem;}
-pre.sql{background:var(--card);border:1px solid var(--border);padding:1.25rem;
-  font-size:.7rem;line-height:1.9;overflow-x:auto;color:var(--gold-l);white-space:pre-wrap;}
+pre.sql{background:var(--card);border:1px solid var(--border);padding:1.25rem;font-size:.7rem;line-height:1.9;overflow-x:auto;color:var(--gold-l);white-space:pre-wrap;}
+
+@media(max-width:680px){
+  .cer-layout{flex-direction:column;}
+  .cer-sidebar{width:100%;max-height:180px;position:static;}
+  .cats-grid{grid-template-columns:1fr;}
+  .tb-options{grid-template-columns:1fr;}
+}
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════ SCREEN: HOME ═══════════════════ -->
+<!-- ═══ WINNER OVERLAY ═══ -->
+<div id="winner-overlay">
+  <div class="win-pre">✦ And the overall winner is ✦</div>
+  <div class="win-stars">★ ★ ★</div>
+  <div class="win-title" id="win-label">Champion</div>
+  <div class="win-name" id="win-name">—</div>
+  <div class="win-score" id="win-score"></div>
+  <div class="win-tied-names" id="win-tied-names"></div>
+  <button class="btn btn-gold" onclick="closeWinnerOverlay()">Continue to Ceremony</button>
+</div>
+
+<!-- ═══ TIEBREAKER OVERLAY ═══ -->
+<div id="tb-overlay">
+  <div class="tb-pre">⚡ Sudden Death Tiebreaker ⚡</div>
+  <div class="tb-title">Oscar Trivia</div>
+  <div class="tb-players" id="tb-players"></div>
+  <div id="tb-body"></div>
+  <div class="tb-host-controls" id="tb-host-controls" style="display:none;"></div>
+</div>
+
+<!-- ═══ HOME ═══ -->
 <div class="screen active" id="screen-home">
   <div class="hdr">
     <div class="hdr-pre">✦ 98th Academy Awards · 2026 ✦</div>
@@ -278,41 +316,26 @@ pre.sql{background:var(--card);border:1px solid var(--border);padding:1.25rem;
       <button class="role-btn active" id="role-player" onclick="setRole('player')">🎬 Join a Game</button>
       <button class="role-btn" id="role-host" onclick="setRole('host')">🎙️ Host a Game</button>
     </div>
-
-    <!-- JOIN PANEL -->
     <div id="join-panel">
-      <div class="field">
-        <label class="label">Your Name</label>
-        <input type="text" id="join-name" placeholder="e.g. Alex" maxlength="30"/>
-      </div>
-      <div class="field">
-        <label class="label">Room Code</label>
-        <input type="text" id="join-code" class="code-input" placeholder="ABCD" maxlength="4"/>
-      </div>
+      <div class="field"><label class="label">Your Name</label><input type="text" id="join-name" placeholder="e.g. Alex" maxlength="30"/></div>
+      <div class="field"><label class="label">Room Code</label><input type="text" id="join-code" class="code-input" placeholder="ABCD" maxlength="4"/></div>
       <button class="btn btn-gold btn-full" onclick="joinRoom()">Join Game →</button>
     </div>
-
-    <!-- HOST PANEL -->
     <div id="host-panel" style="display:none;">
+      <div class="field"><label class="label">Your Name</label><input type="text" id="host-name" placeholder="e.g. Sarah (Host)" maxlength="30"/></div>
       <div class="field">
-        <label class="label">Your Name</label>
-        <input type="text" id="host-name" placeholder="e.g. Sarah (Host)" maxlength="30"/>
-      </div>
-      <div class="field">
-        <label class="label">Host Password <span style="color:var(--muted);font-size:.6rem;">(protects your host controls)</span></label>
+        <label class="label">Host Password <span style="font-size:.6rem;color:var(--muted);">(protects your controls)</span></label>
         <input type="password" id="host-pass" placeholder="Create a password"/>
       </div>
       <button class="btn btn-gold btn-full" onclick="createRoom()">Create Room →</button>
     </div>
-
     <div class="err" id="home-err"></div>
-
     <div class="divider"></div>
-    <div class="info">Each room gets a unique 4-letter code. Share it with friends so they can join your game. You can play as many test rounds as you like — each room is completely separate.</div>
+    <div class="info">Each room gets a unique 4-letter code. Share it with your friends to join your game. Test as many times as you like — each room is completely separate.</div>
   </div>
 </div>
 
-<!-- ═══════════════════ SCREEN: ROOM CREATED ═══════════════════ -->
+<!-- ═══ ROOM CREATED ═══ -->
 <div class="screen" id="screen-room-created">
   <div class="hdr">
     <div class="hdr-pre">✦ Room Created ✦</div>
@@ -322,15 +345,13 @@ pre.sql{background:var(--card);border:1px solid var(--border);padding:1.25rem;
   <div class="wrap">
     <div class="label">Your Room Code</div>
     <div class="code-display" id="room-code-display">----</div>
-    <div class="info" style="text-align:center;">Share this code with everyone who's playing. They enter it on the home screen to join your room.</div>
+    <div class="info" style="text-align:center;margin-bottom:1.5rem;">Share this 4-letter code with everyone playing. They enter it on the home screen to join your room.</div>
     <button class="btn btn-gold btn-full" onclick="goToBracket()">Fill My Picks →</button>
-    <div style="margin-top:.75rem;">
-      <button class="btn btn-full" onclick="goToLobby()">View Lobby →</button>
-    </div>
+    <div style="margin-top:.75rem;"><button class="btn btn-full" onclick="goToLobby()">View Lobby →</button></div>
   </div>
 </div>
 
-<!-- ═══════════════════ SCREEN: LOBBY ═══════════════════ -->
+<!-- ═══ LOBBY ═══ -->
 <div class="screen" id="screen-lobby">
   <div class="hdr">
     <div class="hdr-pre">✦ 98th Academy Awards · 2026 ✦</div>
@@ -339,42 +360,34 @@ pre.sql{background:var(--card);border:1px solid var(--border);padding:1.25rem;
   <div style="padding:1.5rem;">
     <div class="session-info">
       <div>
-        <div style="font-size:.6rem;color:var(--muted);letter-spacing:.2em;margin-bottom:.2rem;">ROOM CODE</div>
+        <div style="font-size:.58rem;color:var(--muted);letter-spacing:.2em;margin-bottom:.2rem;">ROOM CODE</div>
         <div class="session-code" id="lobby-code">----</div>
       </div>
       <div style="text-align:right;">
-        <div style="font-size:.6rem;color:var(--muted);margin-bottom:.3rem;">Share with friends</div>
+        <div style="font-size:.58rem;color:var(--muted);margin-bottom:.3rem;">Share with friends</div>
         <button class="btn btn-sm" onclick="copyCode()">Copy Code</button>
       </div>
     </div>
-
-    <div id="all-done-banner" class="all-done-banner" style="display:none;">
-      <span>✦</span><span>All players submitted — host can start the ceremony!</span>
-    </div>
-
+    <div id="all-done-banner" class="all-done-banner" style="display:none;"><span>✦</span><span>All players submitted — host can start the ceremony!</span></div>
     <div class="flex-between" style="margin-bottom:.75rem;">
       <div class="label" style="margin:0;">Players</div>
-      <div style="font-size:.6rem;color:var(--muted)" id="lobby-count">0 players</div>
+      <div style="font-size:.6rem;color:var(--muted);" id="lobby-count">0 players</div>
     </div>
     <div class="player-grid" id="lobby-players"></div>
-
     <div style="margin-top:1.5rem;display:flex;gap:.75rem;flex-wrap:wrap;" id="lobby-actions">
       <button class="btn btn-gold" onclick="goToBracket()" id="lobby-picks-btn">Fill My Picks →</button>
-      <button class="btn btn-green" onclick="showScreen('screen-ceremony')" id="lobby-ceremony-btn" style="display:none;">Begin Ceremony →</button>
+      <button class="btn btn-green" onclick="hostStartCeremony()" id="lobby-ceremony-btn" style="display:none;">▶ Begin Ceremony</button>
       <button class="btn btn-red btn-sm" onclick="resetRoom()" id="lobby-reset-btn" style="display:none;">Reset Room</button>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════ SCREEN: BRACKET ═══════════════════ -->
+<!-- ═══ BRACKET ═══ -->
 <div class="screen" id="screen-bracket">
   <div class="bracket-bar">
     <div class="bar-player">
       <div class="bar-dot" id="bar-dot"></div>
-      <div>
-        <div class="bar-name" id="bar-name"></div>
-        <div class="bar-role" id="bar-role"></div>
-      </div>
+      <div><div class="bar-name" id="bar-name"></div><div class="bar-role" id="bar-role"></div></div>
     </div>
     <div class="mode-tabs">
       <button class="mode-tab act-p" id="tab-p" onclick="setMode('predict')">🏆 Predicted</button>
@@ -386,13 +399,13 @@ pre.sql{background:var(--card);border:1px solid var(--border);padding:1.25rem;
     </div>
   </div>
   <div class="cats-grid" id="cats-grid"></div>
-  <div class="sticky-submit">
+  <div class="sticky-sub">
     <button class="btn btn-sm" onclick="goToLobby()">← Lobby</button>
     <button class="btn btn-gold" onclick="submitPicks()" id="submit-btn">Submit All Picks →</button>
   </div>
 </div>
 
-<!-- ═══════════════════ SCREEN: CEREMONY ═══════════════════ -->
+<!-- ═══ CEREMONY ═══ -->
 <div class="screen" id="screen-ceremony">
   <div class="hdr" style="padding:1.5rem;">
     <div class="hdr-pre">✦ 98th Academy Awards · 2026 ✦</div>
@@ -405,26 +418,26 @@ pre.sql{background:var(--card);border:1px solid var(--border);padding:1.25rem;
       <div id="cer-cat-list"></div>
     </div>
     <div class="cer-main">
-      <div id="reveal-stage">
-        <div class="locked-msg">← Select a category to reveal picks</div>
-      </div>
+      <div id="reveal-stage"><div class="locked-msg">← Select a category from the list</div></div>
       <div class="lb">
         <div class="lb-title">Leaderboard</div>
         <div id="lb-rows"></div>
-        <div style="font-size:.62rem;color:var(--muted);margin-top:.6rem;">🏆 = 1 point per correct Predicted Winner</div>
+        <div style="font-size:.62rem;color:var(--muted);margin-top:.6rem;">🏆 = 1 point per correct Predicted Winner pick</div>
+        <div id="tiebreaker-section" style="margin-top:1.25rem;display:none;">
+          <button class="btn btn-red" onclick="hostLaunchTiebreaker()">⚡ Launch Tiebreaker</button>
+          <div style="font-size:.65rem;color:var(--muted);margin-top:.4rem;">Tied players will compete in sudden-death Oscar trivia</div>
+        </div>
       </div>
     </div>
   </div>
-  <div style="padding:1rem 1.5rem;">
-    <button class="btn btn-sm" onclick="goToLobby()">← Back to Lobby</button>
-  </div>
+  <div style="padding:1rem 1.5rem;"><button class="btn btn-sm" onclick="goToLobby()">← Lobby</button></div>
 </div>
 
-<!-- ═══════════════════ SCREEN: SETUP NEEDED ═══════════════════ -->
+<!-- ═══ SETUP ═══ -->
 <div class="screen" id="screen-setup">
   <div class="setup-guide">
     <h2>One-Time Setup Required</h2>
-    <p>Your Supabase database needs two tables. Go to your Supabase dashboard → <strong style="color:var(--text);">SQL Editor</strong> → paste and run this:</p>
+    <p>Your Supabase database needs tables created. Go to your Supabase dashboard → <strong style="color:var(--text);">SQL Editor</strong> → paste and run this:</p>
     <pre class="sql" id="setup-sql"></pre>
     <p style="margin-top:1rem;">After running the SQL, reload this page.</p>
   </div>
@@ -433,17 +446,17 @@ pre.sql{background:var(--card);border:1px solid var(--border);padding:1.25rem;
 <div class="toast" id="toast"></div>
 
 <script>
-// ══════════════════════════════════════════════════════════
-// SUPABASE
-// ══════════════════════════════════════════════════════════
-const SUPA_URL = 'https://pbcehiguwsswiwwxsrpp.supabase.co';
-const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBiY2VoaWd1d3Nzd2l3d3hzcnBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyMDY0OTQsImV4cCI6MjA4ODc4MjQ5NH0.V_uCI-fy4t8A6p4H90qVeSYxXGJLkMpzCNDGefJ7aIs';
-const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+// ══════════════════════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════════════════════
+const SUPA_URL='https://pbcehiguwsswiwwxsrpp.supabase.co';
+const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBiY2VoaWd1d3Nzd2l3d3hzcnBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyMDY0OTQsImV4cCI6MjA4ODc4MjQ5NH0.V_uCI-fy4t8A6p4H90qVeSYxXGJLkMpzCNDGefJ7aIs';
+const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
 
-// ══════════════════════════════════════════════════════════
-// DATA
-// ══════════════════════════════════════════════════════════
-const CATS = {
+// ══════════════════════════════════════════════════════
+// CATEGORIES
+// ══════════════════════════════════════════════════════
+const CATS={
   "Best Picture":["Sinners","One Battle After Another","Frankenstein","Marty Supreme","Sentimental Value","Hamnet","Bugonia","F1","The Secret Agent","Train Dreams"],
   "Best Actor":["Sinners","One Battle After Another","Marty Supreme","The Secret Agent","Blue Moon"],
   "Best Actress":["Sentimental Value","Hamnet","Bugonia","If I Had Legs I'd Kick You","Song Sung Blue"],
@@ -469,20 +482,47 @@ const CATS = {
   "Best Adapted Screenplay":["One Battle After Another","Frankenstein","Marty Supreme","It Was Just An Accident","Train Dreams"],
   "Best Original Screenplay":["Sinners","Sentimental Value","Hamnet","Bugonia"]
 };
-const CAT_NAMES = Object.keys(CATS);
-const COLORS = ['#c9a84c','#5ba3cc','#9e6ecf','#4db87a','#e06060','#e09a50','#50c8c8','#c8a87a'];
+const CAT_NAMES=Object.keys(CATS);
+const COLORS=['#c9a84c','#5ba3cc','#9e6ecf','#4db87a','#e06060','#e09a50','#50c8c8','#c8a87a'];
 
-// ══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+// OSCAR TRIVIA BANK
+// ══════════════════════════════════════════════════════
+const TRIVIA=[
+  {q:"Which film won Best Picture at the very first Academy Awards ceremony in 1929?",opts:["Wings","Sunrise","The Jazz Singer","7th Heaven"],a:0},
+  {q:"Who is the only person to win an Oscar for acting in a foreign-language performance?",opts:["Sophia Loren","Roberto Benigni","Marion Cotillard","Penélope Cruz"],a:0},
+  {q:"What film holds the record for most Oscar wins (11 wins)?",opts:["Titanic","Ben-Hur","The Lord of the Rings: The Return of the King","All of the above (tied at 11)"],a:3},
+  {q:"Which director has received the most Oscar nominations without ever winning?",opts:["Alfred Hitchcock","Stanley Kubrick","Martin Scorsese","Robert Altman"],a:0},
+  {q:"Who was the first Black performer to win an Oscar?",opts:["Sidney Poitier","Hattie McDaniel","Dorothy Dandridge","Louis Gossett Jr."],a:1},
+  {q:"What year did the Oscars ceremony first be televised?",opts:["1953","1960","1948","1965"],a:0},
+  {q:"Meryl Streep has been nominated for an Oscar how many times (as of 2025)?",opts:["21","17","19","23"],a:0},
+  {q:"Which film won Best Picture the year it was directed by a woman for the first time?",opts:["The Hurt Locker","Nomadland","Lost in Translation","Zero Dark Thirty"],a:0},
+  {q:"What is the name of the Oscar statuette's official full name?",opts:["Academy Award of Merit","The Oscar Trophy","Golden Statuette","Merit of Excellence"],a:0},
+  {q:"Who hosted the Academy Awards the most times?",opts:["Bob Hope","Billy Crystal","Johnny Carson","Whoopi Goldberg"],a:0},
+  {q:"Which film was the first animated feature to be nominated for Best Picture?",opts:["Beauty and the Beast","The Lion King","Up","Toy Story"],a:0},
+  {q:"What was the first film from a non-English-speaking country to win Best Picture?",opts:["Parasite","Life is Beautiful","Crouching Tiger Hidden Dragon","Roma"],a:0},
+  {q:"How many Oscar nominations did 'La La Land' receive in 2017?",opts:["14","12","11","13"],a:0},
+  {q:"Who said 'You like me, right now, you like me!' upon winning her Oscar?",opts:["Sally Field","Halle Berry","Gwyneth Paltrow","Julia Roberts"],a:0},
+  {q:"Which is the only sequel to win Best Picture?",opts:["The Godfather Part II","The Dark Knight","Toy Story 3","Aliens"],a:0},
+  {q:"Katharine Hepburn won how many Best Actress Oscars?",opts:["4","3","2","5"],a:0},
+  {q:"The Oscar statuette is made primarily of what metal?",opts:["Britannia metal","Bronze","Gold","Silver"],a:0},
+  {q:"Which film's producer famously said nothing at the podium after winning Best Picture?",opts:["It Happened One Night","All About Eve","Hamlet","Marty"],a:3},
+  {q:"Who was the youngest person ever to win a competitive Oscar?",opts:["Tatum O'Neal","Anna Paquin","Adrien Brody","Timothy Hutton"],a:0},
+  {q:"'Parasite' became the first non-English film to win Best Picture in what year?",opts:["2020","2019","2021","2018"],a:0},
+];
+
+// ══════════════════════════════════════════════════════
 // STATE
-// ══════════════════════════════════════════════════════════
-let myName='', myRole='player', myColor='', myRoomCode='';
-let myPicks={}, pickMode='predict';
-let roomData=null, allPlayers=[], activeCat=null;
+// ══════════════════════════════════════════════════════
+let myName='',myRole='player',myColor='',myRoomCode='';
+let myPicks={},pickMode='predict';
+let roomData=null,allPlayers=[],activeCat=null;
 let realtimeChannel=null;
+let tbState=null; // tiebreaker local state
 
-// ══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 // HOME
-// ══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 function setRole(r){
   myRole=r;
   document.getElementById('role-player').classList.toggle('active',r==='player');
@@ -490,126 +530,119 @@ function setRole(r){
   document.getElementById('join-panel').style.display=r==='player'?'block':'none';
   document.getElementById('host-panel').style.display=r==='host'?'block':'none';
 }
-
 function genCode(){
-  const chars='ABCDEFGHJKLMNPQRSTUVWXYZ';
-  return Array.from({length:4},()=>chars[Math.floor(Math.random()*chars.length)]).join('');
+  const c='ABCDEFGHJKLMNPQRSTUVWXYZ';
+  return Array.from({length:4},()=>c[Math.floor(Math.random()*c.length)]).join('');
 }
-
 async function createRoom(){
   const name=document.getElementById('host-name').value.trim();
   const pass=document.getElementById('host-pass').value.trim();
   if(!name){showErr('home-err','Enter your name.');return;}
   if(!pass){showErr('home-err','Set a host password.');return;}
-
   let code=genCode();
-  for(let i=0;i<5;i++){
-    const {data}=await sb.from('rooms').select('code').eq('code',code).single();
-    if(!data) break;
-    code=genCode();
-  }
-
+  for(let i=0;i<5;i++){const{data}=await sb.from('rooms').select('code').eq('code',code).single();if(!data)break;code=genCode();}
   const color=COLORS[0];
-  const {error}=await sb.from('rooms').insert({
-    code, host_name:name, host_password:pass,
-    revealed_json:'{}', winners_json:'{}', active:true
-  });
-  if(error){
-    const msg=error.message||error.details||JSON.stringify(error);
-    showErr('home-err','Error: '+msg);
-    console.error('Room creation error:',error);
-    return;
-  }
-
-  // Add host as player
-  await sb.from('room_players').insert({
-    room_code:code, name, color, role:'host', submitted:false, picks_json:'{}'
-  });
-
-  myName=name; myRole='host'; myColor=color; myRoomCode=code;
-  myPicks={};
+  const{error}=await sb.from('rooms').insert({code,host_name:name,host_password:pass,revealed_json:'{}',winners_json:'{}',active:true,phase:'lobby',tiebreaker_json:'null'});
+  if(error){showErr('home-err','DB Error: '+error.message);return;}
+  await sb.from('room_players').insert({room_code:code,name,color,role:'host',submitted:false,picks_json:'{}'});
+  myName=name;myRole='host';myColor=color;myRoomCode=code;myPicks={};
   document.getElementById('room-code-display').textContent=code;
-  startRealtime();
-  await loadRoomData();
-  showScreen('screen-room-created');
+  startRealtime();await loadRoomData();showScreen('screen-room-created');
 }
-
 async function joinRoom(){
   const name=document.getElementById('join-name').value.trim();
   const code=document.getElementById('join-code').value.trim().toUpperCase();
   if(!name){showErr('home-err','Enter your name.');return;}
   if(code.length!==4){showErr('home-err','Enter the 4-letter room code.');return;}
-
-  const {data:room}=await sb.from('rooms').select('*').eq('code',code).eq('active',true).single();
+  const{data:room}=await sb.from('rooms').select('*').eq('code',code).eq('active',true).single();
   if(!room){showErr('home-err','Room not found. Check the code.');return;}
-
-  // Check if name taken in this room
-  const {data:existing}=await sb.from('room_players').select('*').eq('room_code',code).eq('name',name).single();
-
-  const usedColors=[];
-  const {data:rp}=await sb.from('room_players').select('color').eq('room_code',code);
-  (rp||[]).forEach(p=>usedColors.push(p.color));
+  const{data:existing}=await sb.from('room_players').select('*').eq('room_code',code).eq('name',name).single();
+  const{data:rp}=await sb.from('room_players').select('color').eq('room_code',code);
+  const usedColors=(rp||[]).map(p=>p.color);
   const color=COLORS.find(c=>!usedColors.includes(c))||COLORS[usedColors.length%COLORS.length];
-
-  if(existing){
-    myName=existing.name; myColor=existing.color; myRole=existing.role||'player';
-    myPicks=existing.picks_json?JSON.parse(existing.picks_json):{};
-  } else {
-    await sb.from('room_players').insert({
-      room_code:code, name, color, role:'player', submitted:false, picks_json:'{}'
-    });
-    myName=name; myColor=color; myRole='player'; myPicks={};
-  }
+  if(existing){myName=existing.name;myColor=existing.color;myRole=existing.role||'player';myPicks=existing.picks_json?JSON.parse(existing.picks_json):{};}
+  else{await sb.from('room_players').insert({room_code:code,name,color,role:'player',submitted:false,picks_json:'{}'});myName=name;myColor=color;myRole='player';myPicks={};}
   myRoomCode=code;
-  startRealtime();
-  await loadRoomData();
-
-  if(existing&&existing.submitted){
-    goToLobby();
-  } else {
-    goToLobby();
-  }
+  startRealtime();await loadRoomData();
+  // Go to correct screen based on room phase
+  routeToPhase();
 }
 
-// ══════════════════════════════════════════════════════════
-// ROOM DATA
-// ══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+// ROUTING BASED ON PHASE
+// ══════════════════════════════════════════════════════
+function routeToPhase(){
+  const phase=roomData?.phase||'lobby';
+  if(phase==='ceremony'){
+    showScreen('screen-ceremony');
+    renderCeremony();
+    // Check tiebreaker
+    const tb=roomData?.tiebreaker_json&&roomData.tiebreaker_json!=='null'?JSON.parse(roomData.tiebreaker_json):null;
+    if(tb&&tb.active) renderTiebreaker(tb);
+    // Check winner
+    const winners=JSON.parse(roomData?.winners_json||'{}');
+    if(Object.keys(winners).length===CAT_NAMES.length) checkForGameWinner();
+    return;
+  }
+  goToLobby();
+}
+
+// ══════════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════════
 async function loadRoomData(){
-  const {data:room}=await sb.from('rooms').select('*').eq('code',myRoomCode).single();
+  const{data:room}=await sb.from('rooms').select('*').eq('code',myRoomCode).single();
   roomData=room;
-  const {data:players}=await sb.from('room_players').select('*').eq('room_code',myRoomCode).order('name');
+  const{data:players}=await sb.from('room_players').select('*').eq('room_code',myRoomCode).order('name');
   allPlayers=players||[];
 }
 
-// ══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 // REALTIME
-// ══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 function startRealtime(){
-  if(realtimeChannel) sb.removeChannel(realtimeChannel);
+  if(realtimeChannel)sb.removeChannel(realtimeChannel);
   realtimeChannel=sb.channel('room-'+myRoomCode)
     .on('postgres_changes',{event:'*',schema:'public',table:'room_players',filter:`room_code=eq.${myRoomCode}`},async()=>{
-      await loadRoomData(); refreshScreen();
+      await loadRoomData();onRoomUpdate();
     })
     .on('postgres_changes',{event:'*',schema:'public',table:'rooms',filter:`code=eq.${myRoomCode}`},async()=>{
-      await loadRoomData(); refreshScreen();
+      await loadRoomData();onRoomUpdate();
     })
     .subscribe();
 }
 
-function refreshScreen(){
-  const id=document.querySelector('.screen.active')?.id;
-  if(id==='screen-lobby') renderLobby();
-  if(id==='screen-ceremony') renderCeremony();
+function onRoomUpdate(){
+  const activeScreen=document.querySelector('.screen.active')?.id;
+  const phase=roomData?.phase||'lobby';
+
+  // Auto-redirect to ceremony when host starts it
+  if(phase==='ceremony'&&activeScreen!=='screen-ceremony'&&activeScreen!=='screen-bracket'){
+    showScreen('screen-ceremony');
+  }
+  // Refresh current screen
+  if(activeScreen==='screen-lobby')renderLobby();
+  if(activeScreen==='screen-ceremony'){renderCeremony();}
+
+  // Tiebreaker updates
+  const tb=roomData?.tiebreaker_json&&roomData.tiebreaker_json!=='null'?JSON.parse(roomData.tiebreaker_json):null;
+  if(tb&&tb.active){renderTiebreaker(tb);}
+  else if(!tb||!tb.active){
+    const tbo=document.getElementById('tb-overlay');
+    if(tbo.classList.contains('show')){tbo.classList.remove('show');}
+  }
+
+  // Check for overall winner after all categories done
+  if(phase==='ceremony'){
+    const winners=JSON.parse(roomData?.winners_json||'{}');
+    if(Object.keys(winners).length===CAT_NAMES.length){checkForGameWinner();}
+  }
 }
 
-// ══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 // LOBBY
-// ══════════════════════════════════════════════════════════
-function goToLobby(){
-  renderLobby();
-  showScreen('screen-lobby');
-}
-
+// ══════════════════════════════════════════════════════
+function goToLobby(){renderLobby();showScreen('screen-lobby');}
 function renderLobby(){
   document.getElementById('lobby-code').textContent=myRoomCode;
   const allDone=allPlayers.length>0&&allPlayers.every(p=>p.submitted);
@@ -622,47 +655,33 @@ function renderLobby(){
         <div class="pchip-name">${p.name}${p.name===myName?' (you)':''}</div>
         <div class="pchip-status">${p.submitted?'✓ submitted':'pending…'}</div>
       </div>
-    </div>
-  `).join('');
-  // My submitted status
+    </div>`).join('');
   const me=allPlayers.find(p=>p.name===myName);
   document.getElementById('lobby-picks-btn').textContent=me?.submitted?'Edit Picks →':'Fill My Picks →';
   document.getElementById('lobby-ceremony-btn').style.display=myRole==='host'?'flex':'none';
   document.getElementById('lobby-reset-btn').style.display=myRole==='host'?'inline-block':'none';
 }
-
 function copyCode(){
-  navigator.clipboard.writeText(myRoomCode).then(()=>toast('Room code copied!')).catch(()=>{
-    // fallback
-    const el=document.createElement('input');
-    el.value=myRoomCode; document.body.appendChild(el);
-    el.select(); document.execCommand('copy'); document.body.removeChild(el);
-    toast('Code: '+myRoomCode);
-  });
+  navigator.clipboard.writeText(myRoomCode).then(()=>toast('Code copied!')).catch(()=>toast('Code: '+myRoomCode));
 }
-
 async function resetRoom(){
-  if(!confirm('Reset this room? All picks and results will be cleared.')) return;
+  if(!confirm('Reset this room? All picks and results will be cleared.'))return;
   await sb.from('room_players').delete().eq('room_code',myRoomCode);
-  await sb.from('rooms').update({revealed_json:'{}',winners_json:'{}'}).eq('code',myRoomCode);
-  // Re-add host
-  await sb.from('room_players').insert({
-    room_code:myRoomCode,name:myName,color:myColor,role:'host',submitted:false,picks_json:'{}'
-  });
-  myPicks={};
+  await sb.from('rooms').update({revealed_json:'{}',winners_json:'{}',phase:'lobby',tiebreaker_json:'null'}).eq('code',myRoomCode);
+  await sb.from('room_players').insert({room_code:myRoomCode,name:myName,color:myColor,role:'host',submitted:false,picks_json:'{}'});
+  myPicks={};await loadRoomData();renderLobby();toast('Room reset!');
+}
+async function hostStartCeremony(){
+  await sb.from('rooms').update({phase:'ceremony'}).eq('code',myRoomCode);
   await loadRoomData();
-  renderLobby();
-  toast('Room reset!');
+  showScreen('screen-ceremony');
+  renderCeremony();
 }
 
-// ══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 // BRACKET
-// ══════════════════════════════════════════════════════════
-function goToBracket(){
-  buildBracket();
-  showScreen('screen-bracket');
-}
-
+// ══════════════════════════════════════════════════════
+function goToBracket(){buildBracket();showScreen('screen-bracket');}
 function buildBracket(){
   document.getElementById('bar-dot').style.background=myColor;
   document.getElementById('bar-name').textContent=myName;
@@ -670,10 +689,7 @@ function buildBracket(){
   const grid=document.getElementById('cats-grid');
   grid.innerHTML=CAT_NAMES.map(cat=>`
     <div class="cat-card" id="cc-${sl(cat)}">
-      <div class="cat-head">
-        <span class="cat-name">${cat}</span>
-        <span class="cat-tick" id="ct-${sl(cat)}"></span>
-      </div>
+      <div class="cat-head"><span class="cat-name">${cat}</span><span class="cat-tick" id="ct-${sl(cat)}"></span></div>
       <div class="nom-list">
         ${CATS[cat].map(film=>`
           <div class="nom" id="n-${sl(cat)}-${sl(film)}" onclick="pickNom('${es(cat)}','${es(film)}')">
@@ -682,32 +698,22 @@ function buildBracket(){
               <div class="pdot" id="dp-${sl(cat)}-${sl(film)}" style="border-color:${myColor}35"></div>
               <div class="pdot" id="ds-${sl(cat)}-${sl(film)}" style="border-color:#5ba3cc35"></div>
             </div>
-          </div>
-        `).join('')}
+          </div>`).join('')}
       </div>
-    </div>
-  `).join('');
-  setMode('predict');
-  redrawNoms();
-  updateProg();
+    </div>`).join('');
+  setMode('predict');redrawNoms();updateProg();
 }
-
 function setMode(m){
   pickMode=m;
   document.getElementById('tab-p').className='mode-tab'+(m==='predict'?' act-p':'');
   document.getElementById('tab-s').className='mode-tab'+(m==='personal'?' act-s':'');
 }
-
 function pickNom(cat,film){
-  if(!myPicks[cat]) myPicks[cat]={};
+  if(!myPicks[cat])myPicks[cat]={};
   myPicks[cat][pickMode]=film;
-  redrawNoms();
-  updateProg();
-  // auto-save draft
-  sb.from('room_players').update({picks_json:JSON.stringify(myPicks)})
-    .eq('room_code',myRoomCode).eq('name',myName);
+  redrawNoms();updateProg();
+  sb.from('room_players').update({picks_json:JSON.stringify(myPicks)}).eq('room_code',myRoomCode).eq('name',myName);
 }
-
 function redrawNoms(){
   CAT_NAMES.forEach(cat=>{
     const cp=myPicks[cat]||{};
@@ -715,207 +721,432 @@ function redrawNoms(){
       const row=document.getElementById(`n-${sl(cat)}-${sl(film)}`);
       const dp=document.getElementById(`dp-${sl(cat)}-${sl(film)}`);
       const ds=document.getElementById(`ds-${sl(cat)}-${sl(film)}`);
-      if(!row) return;
-      const ip=cp.predict===film, is=cp.personal===film;
+      if(!row)return;
+      const ip=cp.predict===film,is=cp.personal===film;
       row.className='nom'+(ip&&is?' sel-b':ip?' sel-p':is?' sel-s':'');
       if(dp){dp.className='pdot'+(ip?' on-p':'');dp.style.borderColor=ip?myColor:myColor+'35';dp.style.background=ip?myColor:'';}
       if(ds){ds.className='pdot'+(is?' on-s':'');}
     });
     const tick=document.getElementById(`ct-${sl(cat)}`);
-    if(tick) tick.textContent=(cp.predict&&cp.personal)?'✓':(cp.predict||cp.personal)?'·':'';
+    if(tick)tick.textContent=(cp.predict&&cp.personal)?'✓':(cp.predict||cp.personal)?'·':'';
   });
 }
-
 function updateProg(){
   const filled=CAT_NAMES.filter(c=>myPicks[c]?.predict&&myPicks[c]?.personal).length;
   document.getElementById('prog-fill').style.width=(filled/CAT_NAMES.length*100)+'%';
   document.getElementById('prog-lbl').textContent=filled+'/'+CAT_NAMES.length;
 }
-
 async function submitPicks(){
   const btn=document.getElementById('submit-btn');
-  btn.disabled=true; btn.textContent='Submitting…';
-  await sb.from('room_players').update({picks_json:JSON.stringify(myPicks),submitted:true})
-    .eq('room_code',myRoomCode).eq('name',myName);
-  await loadRoomData();
-  toast('Picks locked in! 🎬');
-  goToLobby();
+  btn.disabled=true;btn.textContent='Submitting…';
+  await sb.from('room_players').update({picks_json:JSON.stringify(myPicks),submitted:true}).eq('room_code',myRoomCode).eq('name',myName);
+  await loadRoomData();toast('Picks locked in! 🎬');goToLobby();
 }
 
-// ══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 // CEREMONY
-// ══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 function renderCeremony(){
   document.getElementById('cer-badge').style.display=myRole==='host'?'inline-flex':'none';
-  const revealed=roomData?JSON.parse(roomData.revealed_json||'{}'):{};
-  const winners=roomData?JSON.parse(roomData.winners_json||'{}'):{};
-
-  // Sidebar
+  const revealed=JSON.parse(roomData?.revealed_json||'{}');
+  const winners=JSON.parse(roomData?.winners_json||'{}');
   document.getElementById('cer-cat-list').innerHTML=CAT_NAMES.map(cat=>`
     <div class="cat-item ${activeCat===cat?'act':''} ${winners[cat]?'done':''}"
       onclick="selectCat('${es(cat)}')">
       <span class="cat-item-name">${cat}</span>
       <span class="cat-item-icon">${winners[cat]?'🏆':revealed[cat]?'👁':''}</span>
-    </div>
-  `).join('');
-
-  if(activeCat) renderReveal(activeCat);
+    </div>`).join('');
+  if(activeCat)renderReveal(activeCat);
   renderLB();
 }
-
 function selectCat(cat){
   activeCat=cat;
   renderReveal(cat);
-  document.querySelectorAll('.cat-item').forEach((el,i)=>{
-    el.classList.toggle('act',CAT_NAMES[i]===cat);
-  });
+  document.querySelectorAll('.cat-item').forEach((el,i)=>el.classList.toggle('act',CAT_NAMES[i]===cat));
 }
-
 function renderReveal(cat){
-  const revealed=roomData?JSON.parse(roomData.revealed_json||'{}'):{};
-  const winners=roomData?JSON.parse(roomData.winners_json||'{}'):{};
-  const isRevealed=revealed[cat], winner=winners[cat];
+  const revealed=JSON.parse(roomData?.revealed_json||'{}');
+  const winners=JSON.parse(roomData?.winners_json||'{}');
+  const isRevealed=revealed[cat],winner=winners[cat];
   const nominees=CATS[cat];
-
-  // Build picks map
   const picksMap={};
-  allPlayers.forEach(p=>{
-    const pp=p.picks_json?JSON.parse(p.picks_json):{};
-    picksMap[p.name]={color:p.color,pick:pp[cat]||{}};
-  });
-
+  allPlayers.forEach(p=>{const pp=p.picks_json?JSON.parse(p.picks_json):{};picksMap[p.name]={color:p.color,pick:pp[cat]||{}};});
   const stage=document.getElementById('reveal-stage');
   stage.innerHTML=`
     <div class="rev-title">${cat}</div>
     <div class="rev-sub">✦ ${nominees.length} nominees</div>
-
-    ${myRole!=='host'&&!isRevealed?`<div class="locked-msg">🔒 The host hasn't revealed picks for this category yet.<br>Check back after the award is announced!</div>`:''}
-
+    ${myRole!=='host'&&!isRevealed?`<div class="locked-msg">🔒 Waiting for the host to reveal picks for this category…</div>`:''}
     <div class="nom-rows">
       ${nominees.map(film=>{
-        const predPickers=allPlayers.filter(p=>picksMap[p.name]?.pick?.predict===film);
-        const persPickers=allPlayers.filter(p=>picksMap[p.name]?.pick?.personal===film);
+        const pp=allPlayers.filter(p=>picksMap[p.name]?.pick?.predict===film);
+        const sp=allPlayers.filter(p=>picksMap[p.name]?.pick?.personal===film);
         const isWin=winner===film;
-        return `
-          <div class="nom-row ${isWin?'winner':''} ${!isRevealed?'hidden':''}" id="nr-${sl(cat)}-${sl(film)}">
-            ${isWin?'<div class="crown">🏆</div>':''}
-            <div class="nom-film">${film}</div>
-            <div class="picks-row">
-              ${predPickers.map(p=>`<div class="pchip predict"><div class="pchip-dot" style="background:${p.color}"></div>${p.name} 🏆</div>`).join('')}
-              ${persPickers.map(p=>`<div class="pchip personal"><div class="pchip-dot" style="background:${p.color}"></div>${p.name} ❤️</div>`).join('')}
-              ${predPickers.length===0&&persPickers.length===0&&isRevealed?`<span style="font-size:.62rem;color:var(--muted)">No picks</span>`:''}
-            </div>
+        return `<div class="nom-row ${isWin?'winner':''} ${!isRevealed?'hidden':''}" id="nr-${sl(cat)}-${sl(film)}">
+          ${isWin?'<div class="crown">🏆</div>':''}
+          <div class="nom-film">${film}</div>
+          <div class="picks-row">
+            ${pp.map(p=>`<div class="pchip predict"><div class="pchip-dot" style="background:${p.color}"></div>${p.name} 🏆</div>`).join('')}
+            ${sp.map(p=>`<div class="pchip personal"><div class="pchip-dot" style="background:${p.color}"></div>${p.name} ❤️</div>`).join('')}
+            ${pp.length===0&&sp.length===0&&isRevealed?`<span style="font-size:.62rem;color:var(--muted)">No picks</span>`:''}
           </div>
-        `;
+        </div>`;
       }).join('')}
     </div>
-
     ${myRole==='host'?`
       <div class="host-btn-row">
         ${!isRevealed
           ?`<button class="btn btn-gold" onclick="revealCat('${es(cat)}')">👁 Reveal Picks</button>`
-          :`<span style="font-size:.68rem;color:var(--green);">✓ Picks revealed</span>`
-        }
+          :`<span style="font-size:.68rem;color:var(--green);">✓ Picks revealed</span>`}
       </div>
       ${isRevealed?`
         <div class="hctl">
           <div class="hctl-label">Mark Actual Oscar Winner</div>
           <div class="winner-opts">
-            ${nominees.map(film=>`
-              <div class="wopt ${winner===film?'sel':''}" onclick="markWinner('${es(cat)}','${es(film)}')">${film}</div>
-            `).join('')}
+            ${nominees.map(film=>`<div class="wopt ${winner===film?'sel':''}" onclick="markWinner('${es(cat)}','${es(film)}')">${film}</div>`).join('')}
           </div>
-        </div>
-      `:''}
-    `:''}
-  `;
+        </div>`:''}
+    `:''}`;
 }
-
 async function revealCat(cat){
-  const revealed=roomData?JSON.parse(roomData.revealed_json||'{}'):{};
+  const revealed=JSON.parse(roomData?.revealed_json||'{}');
   revealed[cat]=true;
   await sb.from('rooms').update({revealed_json:JSON.stringify(revealed)}).eq('code',myRoomCode);
   await loadRoomData();
-  // Animate
   CATS[cat].forEach(film=>{
     const row=document.getElementById(`nr-${sl(cat)}-${sl(film)}`);
     if(row){row.classList.remove('hidden');row.classList.add('flash');}
   });
-  toast('Picks revealed for: '+cat);
+  toast('Picks revealed: '+cat);
 }
-
 async function markWinner(cat,film){
-  const winners=roomData?JSON.parse(roomData.winners_json||'{}'):{};
+  const winners=JSON.parse(roomData?.winners_json||'{}');
   winners[cat]=film;
   await sb.from('rooms').update({winners_json:JSON.stringify(winners)}).eq('code',myRoomCode);
   await loadRoomData();
-  confetti();
-  toast('🏆 Winner: '+film);
-  renderReveal(cat);
-  renderLB();
-  // Update sidebar
+  confetti();toast('🏆 Winner: '+film);
+  renderReveal(cat);renderLB();
   document.querySelectorAll('.cat-item').forEach((el,i)=>{
     const c=CAT_NAMES[i];
-    const w=JSON.parse(roomData.winners_json||'{}');
-    el.querySelector('.cat-item-icon').textContent=w[c]?'🏆':JSON.parse(roomData.revealed_json||'{}')[c]?'👁':'';
+    const w=JSON.parse(roomData?.winners_json||'{}');
+    el.querySelector('.cat-item-icon').textContent=w[c]?'🏆':JSON.parse(roomData?.revealed_json||'{}')[c]?'👁':'';
     el.classList.toggle('done',!!w[c]);
   });
+  // Check if all categories done
+  if(Object.keys(winners).length===CAT_NAMES.length) checkForGameWinner();
 }
 
-function renderLB(){
-  const winners=roomData?JSON.parse(roomData.winners_json||'{}'):{};
-  const markedCount=Object.keys(winners).length;
-  const scores=allPlayers.map(p=>{
+// ══════════════════════════════════════════════════════
+// LEADERBOARD
+// ══════════════════════════════════════════════════════
+function calcScores(){
+  const winners=JSON.parse(roomData?.winners_json||'{}');
+  return allPlayers.map(p=>{
     const pp=p.picks_json?JSON.parse(p.picks_json):{};
     let score=0;
     CAT_NAMES.forEach(cat=>{if(winners[cat]&&pp[cat]?.predict===winners[cat])score++;});
     return{name:p.name,color:p.color,score};
   }).sort((a,b)=>b.score-a.score);
+}
+function renderLB(){
+  const scores=calcScores();
+  const winners=JSON.parse(roomData?.winners_json||'{}');
+  const markedCount=Object.keys(winners).length;
   const maxS=scores[0]?.score||1;
-  document.getElementById('lb-rows').innerHTML=scores.map((s,i)=>`
-    <div class="lb-row ${i===0&&s.score>0?'first':''}">
+  const topScore=scores[0]?.score||0;
+  const tied=scores.filter(s=>s.score===topScore&&topScore>0);
+  const hasTie=tied.length>1&&markedCount===CAT_NAMES.length;
+  document.getElementById('lb-rows').innerHTML=scores.map((s,i)=>{
+    const isTied=hasTie&&s.score===topScore;
+    return`<div class="lb-row ${i===0&&s.score>0?'first':''} ${isTied?'tied':''}">
       <div class="lb-bar-bg" style="width:${maxS>0?s.score/maxS*100:0}%"></div>
       <div class="lb-rank ${i<3?'top':''}">${i+1}</div>
       <div class="lb-dot" style="background:${s.color}"></div>
       <div class="lb-name">${s.name}</div>
-      <div>
-        <div class="lb-score">${s.score}</div>
-        <div class="lb-of">of ${markedCount} pts</div>
-      </div>
-    </div>
-  `).join('')||'<div style="color:var(--muted);font-size:.78rem;">No winners marked yet.</div>';
+      ${isTied?'<div class="lb-tie-badge">TIE</div>':''}
+      <div><div class="lb-score">${s.score}</div><div class="lb-of">of ${markedCount}</div></div>
+    </div>`;
+  }).join('')||'<div style="color:var(--muted);font-size:.78rem;">No winners marked yet.</div>';
+
+  // Show tiebreaker button if host, all cats done, and there's a tie
+  const tbSection=document.getElementById('tiebreaker-section');
+  const tb=roomData?.tiebreaker_json&&roomData.tiebreaker_json!=='null'?JSON.parse(roomData.tiebreaker_json):null;
+  tbSection.style.display=(myRole==='host'&&hasTie&&(!tb||!tb.active))?'block':'none';
 }
 
-// ══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+// WINNER CELEBRATION
+// ══════════════════════════════════════════════════════
+let winnerShown=false;
+function checkForGameWinner(){
+  if(winnerShown)return;
+  const scores=calcScores();
+  const topScore=scores[0]?.score||0;
+  if(topScore===0)return;
+  const tied=scores.filter(s=>s.score===topScore);
+  const overlay=document.getElementById('winner-overlay');
+  if(overlay.classList.contains('show'))return;
+  winnerShown=true;
+
+  // Check if tiebreaker was already run and resolved
+  const tb=roomData?.tiebreaker_json&&roomData.tiebreaker_json!=='null'?JSON.parse(roomData.tiebreaker_json):null;
+  const tbWinner=tb?.winner;
+
+  if(tbWinner){
+    const winner=allPlayers.find(p=>p.name===tbWinner);
+    document.getElementById('win-label').textContent='🏆 Tiebreaker Champion';
+    document.getElementById('win-name').textContent=tbWinner;
+    document.getElementById('win-name').style.color=winner?.color||'var(--gold)';
+    document.getElementById('win-score').innerHTML=`<span>${topScore}</span> correct predictions`;
+    document.getElementById('win-tied-names').textContent='Won in sudden-death trivia tiebreaker!';
+  } else if(tied.length===1){
+    document.getElementById('win-label').textContent='🏆 Overall Champion';
+    document.getElementById('win-name').textContent=tied[0].name;
+    document.getElementById('win-name').style.color=tied[0].color;
+    document.getElementById('win-score').innerHTML=`<span>${topScore}</span> correct predictions`;
+    document.getElementById('win-tied-names').textContent='';
+  } else {
+    document.getElementById('win-label').textContent='🏆 It\'s a Tie!';
+    document.getElementById('win-name').textContent=tied.map(t=>t.name).join(' & ');
+    document.getElementById('win-name').style.fontSize='clamp(1.5rem,4vw,3rem)';
+    document.getElementById('win-score').innerHTML=`Each with <span>${topScore}</span> correct predictions`;
+    document.getElementById('win-tied-names').textContent='Tiebreaker may be coming…';
+  }
+  overlay.classList.add('show');
+  bigConfetti();
+}
+function closeWinnerOverlay(){document.getElementById('winner-overlay').classList.remove('show');}
+
+// ══════════════════════════════════════════════════════
+// TIEBREAKER
+// ══════════════════════════════════════════════════════
+function getTiedPlayers(){
+  const scores=calcScores();
+  const topScore=scores[0]?.score||0;
+  return scores.filter(s=>s.score===topScore).map(s=>s.name);
+}
+
+async function hostLaunchTiebreaker(){
+  const tiedNames=getTiedPlayers();
+  if(tiedNames.length<2){toast('No tie to break!');return;}
+  // Pick first unused trivia question
+  const tb={
+    active:true,
+    round:1,
+    qIndex:0,
+    competitors:tiedNames,
+    eliminated:[],
+    answers:{}, // {playerName: answerIndex}
+    revealed:false,
+    winner:null,
+    usedQ:[]
+  };
+  await sb.from('rooms').update({tiebreaker_json:JSON.stringify(tb)}).eq('code',myRoomCode);
+  toast('Tiebreaker launched!');
+}
+
+function renderTiebreaker(tb){
+  const overlay=document.getElementById('tb-overlay');
+  overlay.classList.add('show');
+
+  // Players row
+  document.getElementById('tb-players').innerHTML=tb.competitors.map(name=>{
+    const p=allPlayers.find(x=>x.name===name);
+    const isElim=tb.eliminated?.includes(name);
+    const isActive=!isElim;
+    return`<div class="tb-player-chip ${isActive?'active':''} ${isElim?'eliminated':''}">
+      <div class="pchip-dot" style="background:${p?.color||'#666'}"></div>${name}
+    </div>`;
+  }).join('');
+
+  const q=TRIVIA[tb.qIndex%TRIVIA.length];
+  const amICompetitor=tb.competitors.includes(myName)&&!tb.eliminated?.includes(myName);
+  const myAnswer=tb.answers?.[myName];
+  const revealed=tb.revealed;
+
+  // If tiebreaker is over
+  if(tb.winner){
+    document.getElementById('tb-body').innerHTML=`
+      <div style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold);margin-bottom:.5rem;">🏆 ${tb.winner}</div>
+      <div style="font-size:.8rem;color:var(--muted);">Wins the tiebreaker!</div>`;
+    document.getElementById('tb-host-controls').style.display='none';
+    bigConfetti();
+    // Auto-close after 5s and update leaderboard
+    setTimeout(()=>{
+      overlay.classList.remove('show');
+      renderLB();
+      winnerShown=false;
+      checkForGameWinner();
+    },5000);
+    return;
+  }
+
+  let bodyHTML=`<div class="tb-qnum">Round ${tb.round} · Question ${tb.round}</div>
+    <div class="tb-question">${q.q}</div>`;
+
+  if(amICompetitor){
+    bodyHTML+=`<div class="tb-options">
+      ${q.opts.map((opt,i)=>{
+        let cls='tb-opt';
+        if(myAnswer!==undefined){
+          cls+=' disabled';
+          if(i===myAnswer)cls+=revealed?(i===q.a?' correct':' wrong'):(myAnswer===i?' picked':'');
+          if(revealed&&i===q.a)cls+=' correct';
+        }
+        return`<button class="tb-opt${myAnswer!==undefined?' disabled':''} ${myAnswer===i&&!revealed?' picked':''} ${revealed&&i===q.a?' correct':''} ${revealed&&myAnswer===i&&i!==q.a?' wrong':''}"
+          onclick="submitTBAnswer(${i})" ${myAnswer!==undefined?'disabled':''}>
+          ${String.fromCharCode(65+i)}. ${opt}
+        </button>`;
+      }).join('')}
+    </div>`;
+    if(myAnswer!==undefined&&!revealed){
+      bodyHTML+=`<div class="tb-waiting">Answer locked in — waiting for others…</div>`;
+    }
+  } else {
+    // Spectator view
+    bodyHTML+=`<div class="tb-spectator">${tb.competitors.filter(n=>!tb.eliminated?.includes(n)).join(' vs ')} are answering…</div>`;
+    if(revealed){
+      bodyHTML+=`<div class="tb-options">
+        ${q.opts.map((opt,i)=>`<button class="tb-opt ${i===q.a?' correct':''}" disabled>${String.fromCharCode(65+i)}. ${opt}</button>`).join('')}
+      </div>`;
+    }
+  }
+
+  // Show answer results if revealed
+  if(revealed){
+    const activeCompetitors=tb.competitors.filter(n=>!tb.eliminated?.includes(n));
+    bodyHTML+=`<div class="tb-result">
+      ${activeCompetitors.map(name=>{
+        const ans=tb.answers?.[name];
+        const p=allPlayers.find(x=>x.name===name);
+        const correct=ans===q.a;
+        return`<div class="tb-result-line">
+          <div class="tb-result-dot" style="background:${p?.color||'#666'}"></div>
+          <span>${name}</span>
+          <span style="color:${correct?'var(--green)':'var(--red)'}">${correct?'✓ Correct':'✗ Wrong'}</span>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }
+
+  document.getElementById('tb-body').innerHTML=bodyHTML;
+
+  // Host controls
+  const hctl=document.getElementById('tb-host-controls');
+  if(myRole==='host'){
+    hctl.style.display='flex';
+    const activeCompetitors=tb.competitors.filter(n=>!tb.eliminated?.includes(n));
+    const allAnswered=activeCompetitors.every(n=>tb.answers?.[n]!==undefined);
+    if(!revealed&&allAnswered){
+      hctl.innerHTML=`<button class="btn btn-gold" onclick="hostRevealTBAnswer()">Reveal Answers</button>`;
+    } else if(revealed){
+      hctl.innerHTML=`<button class="btn btn-gold" onclick="hostNextTBRound()">Next Question →</button>
+        <button class="btn btn-sm btn-red" onclick="hostEndTiebreaker()">End Tiebreaker</button>`;
+    } else {
+      hctl.innerHTML=`<span style="font-size:.68rem;color:var(--muted);">Waiting for all answers…</span>
+        <button class="btn btn-sm btn-red" onclick="hostEndTiebreaker()">End</button>`;
+    }
+  } else {
+    hctl.style.display='none';
+  }
+}
+
+async function submitTBAnswer(answerIdx){
+  const tb=JSON.parse(roomData.tiebreaker_json);
+  if(!tb.active||tb.eliminated?.includes(myName))return;
+  if(tb.answers?.[myName]!==undefined)return;
+  if(!tb.answers)tb.answers={};
+  tb.answers[myName]=answerIdx;
+  await sb.from('rooms').update({tiebreaker_json:JSON.stringify(tb)}).eq('code',myRoomCode);
+}
+
+async function hostRevealTBAnswer(){
+  const tb=JSON.parse(roomData.tiebreaker_json);
+  tb.revealed=true;
+  await sb.from('rooms').update({tiebreaker_json:JSON.stringify(tb)}).eq('code',myRoomCode);
+}
+
+async function hostNextTBRound(){
+  const tb=JSON.parse(roomData.tiebreaker_json);
+  const q=TRIVIA[tb.qIndex%TRIVIA.length];
+  const activeCompetitors=tb.competitors.filter(n=>!tb.eliminated?.includes(n));
+
+  // Determine who got it wrong
+  const newEliminated=[...(tb.eliminated||[])];
+  const correct=activeCompetitors.filter(n=>tb.answers?.[n]===q.a);
+  const wrong=activeCompetitors.filter(n=>tb.answers?.[n]!==q.a);
+
+  // If everyone got it wrong or everyone got it right, just advance question
+  if(wrong.length===0||correct.length===0){
+    tb.qIndex=(tb.qIndex+1)%TRIVIA.length;
+    tb.round++;
+    tb.answers={};
+    tb.revealed=false;
+  } else {
+    // Eliminate wrong answerers
+    wrong.forEach(n=>newEliminated.push(n));
+    tb.eliminated=newEliminated;
+    const remaining=activeCompetitors.filter(n=>!newEliminated.includes(n));
+    if(remaining.length===1){
+      tb.winner=remaining[0];
+      tb.active=false;
+    } else if(remaining.length===0){
+      // Everyone eliminated - no one wins, redo
+      tb.qIndex=(tb.qIndex+1)%TRIVIA.length;
+      tb.round++;
+      tb.answers={};
+      tb.revealed=false;
+    } else {
+      tb.qIndex=(tb.qIndex+1)%TRIVIA.length;
+      tb.round++;
+      tb.answers={};
+      tb.revealed=false;
+    }
+  }
+
+  await sb.from('rooms').update({tiebreaker_json:JSON.stringify(tb)}).eq('code',myRoomCode);
+  if(tb.winner){
+    // Update winner in leaderboard sense
+    toast('🏆 Tiebreaker winner: '+tb.winner);
+  }
+}
+
+async function hostEndTiebreaker(){
+  const tb=JSON.parse(roomData.tiebreaker_json);
+  tb.active=false;
+  await sb.from('rooms').update({tiebreaker_json:JSON.stringify(tb)}).eq('code',myRoomCode);
+  document.getElementById('tb-overlay').classList.remove('show');
+}
+
+// ══════════════════════════════════════════════════════
 // UTILS
-// ══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
-  if(id==='screen-ceremony') renderCeremony();
-  if(id==='screen-lobby') renderLobby();
+  if(id==='screen-ceremony')renderCeremony();
+  if(id==='screen-lobby')renderLobby();
 }
 function sl(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');}
 function es(s){return s.replace(/'/g,"\\'");}
-function showErr(id,msg){const el=document.getElementById(id);el.textContent=msg;el.style.display='block';setTimeout(()=>el.style.display='none',4000);}
+function showErr(id,msg){const el=document.getElementById(id);el.textContent=msg;el.style.display='block';setTimeout(()=>el.style.display='none',5000);}
 let toastT;
 function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),3000);}
-function confetti(){
-  const cols=['#c9a84c','#e8cc7a','#fff','#5ba3cc','#4db87a'];
-  for(let i=0;i<45;i++){
-    const el=document.createElement('div');
-    el.className='confetti-piece';
-    const s=6+Math.random()*6;
-    el.style.cssText=`left:${Math.random()*100}vw;top:${-10-Math.random()*20}px;background:${cols[Math.floor(Math.random()*cols.length)]};animation-delay:${Math.random()*.8}s;animation-duration:${1.5+Math.random()*2}s;width:${s}px;height:${s}px;`;
-    document.body.appendChild(el);
-    setTimeout(()=>el.remove(),4000);
+function confetti(){spawnConfetti(45);}
+function bigConfetti(){spawnConfetti(120);}
+function spawnConfetti(n){
+  const cols=['#c9a84c','#e8cc7a','#fff','#5ba3cc','#4db87a','#e06060'];
+  for(let i=0;i<n;i++){
+    const el=document.createElement('div');el.className='confetti-piece';
+    const s=6+Math.random()*8;
+    el.style.cssText=`left:${Math.random()*100}vw;top:${-10-Math.random()*20}px;background:${cols[Math.floor(Math.random()*cols.length)]};animation-delay:${Math.random()*1.2}s;animation-duration:${1.5+Math.random()*2}s;width:${s}px;height:${s}px;`;
+    document.body.appendChild(el);setTimeout(()=>el.remove(),4500);
   }
 }
 
-// ══════════════════════════════════════════════════════════
-// INIT — check tables exist
-// ══════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+// SQL SETUP
+// ══════════════════════════════════════════════════════
 const SQL=`-- Run once in Supabase SQL Editor
 
 create table if not exists rooms (
@@ -924,6 +1155,8 @@ create table if not exists rooms (
   host_password text,
   revealed_json text default '{}',
   winners_json text default '{}',
+  tiebreaker_json text default 'null',
+  phase text default 'lobby',
   active boolean default true,
   created_at timestamptz default now()
 );
@@ -940,23 +1173,21 @@ create table if not exists room_players (
   unique(room_code, name)
 );
 
+alter table rooms disable row level security;
+alter table room_players disable row level security;
+
 alter publication supabase_realtime add table rooms;
 alter publication supabase_realtime add table room_players;`;
 
 async function init(){
-  const {error}=await sb.from('rooms').select('code').limit(1);
+  const{error}=await sb.from('rooms').select('code').limit(1);
   if(error&&(error.code==='42P01'||error.message?.includes('does not exist'))){
     document.getElementById('setup-sql').textContent=SQL;
-    showScreen('screen-setup');
-    return;
+    showScreen('screen-setup');return;
   }
-  // Check URL for room code (shareable links)
   const params=new URLSearchParams(window.location.search);
   const code=params.get('room');
-  if(code){
-    document.getElementById('join-code').value=code.toUpperCase();
-    setRole('player');
-  }
+  if(code){document.getElementById('join-code').value=code.toUpperCase();setRole('player');}
 }
 init();
 </script>
