@@ -494,30 +494,179 @@ const sb=supabase.createClient(SUPA_URL,SUPA_KEY);
 // CATEGORIES
 // ══════════════════════════════════════════════════════
 const CATS={
-  "Best Picture":["Sinners","One Battle After Another","Frankenstein","Marty Supreme","Sentimental Value","Hamnet","Bugonia","F1","The Secret Agent","Train Dreams"],
-  "Best Actor":["Sinners","One Battle After Another","Marty Supreme","The Secret Agent","Blue Moon"],
-  "Best Actress":["Sentimental Value","Hamnet","Bugonia","If I Had Legs I'd Kick You","Song Sung Blue"],
-  "Best Supporting Actor":["Sinners","One Battle After Another","Frankenstein","Sentimental Value","Weapons"],
-  "Best Supporting Actress":["Sinners","One Battle After Another","Sentimental Value","Hamnet"],
-  "Best Director":["Sinners","One Battle After Another","Marty Supreme","Sentimental Value","Hamnet"],
-  "Best Animated Feature":["KPop Demon Hunters","Arco","Elio","Little Amélie","Zootopia 2"],
-  "Best Animated Short":["Butterflies","Forevergreen","The Girl Who Cried Pearls","Retirement Plan","The Three Sisters"],
-  "Best Casting":["Sinners","One Battle After Another","Marty Supreme","The Secret Agent"],
-  "Best Cinematography":["Sinners","One Battle After Another","Frankenstein","Marty Supreme","Train Dreams"],
-  "Best Costume Design":["Sinners","Frankenstein","Marty Supreme","Hamnet","Avatar: Fire and Ash"],
-  "Best Documentary Feature":["Cutting Through the Rocks","Come See Me in the Good Light","Mr. Nobody Against Putin","The Alabama Solution","The Perfect Neighbor"],
-  "Best Documentary Short":["All the Empty Rooms","Armed Only With A Camera","Children No More","The Devil is Busy","Perfectly a Strangeness"],
-  "Best Film Editing":["Sinners","One Battle After Another","Sentimental Value","Marty Supreme","F1"],
-  "Best International Feature":["Sentimental Value","The Secret Agent","It Was Just An Accident","The Voice of Hind Rajab","Sirāt"],
-  "Best Live-Action Short":["Butcher's Stain","A Friend of Dorothy","Jane Austen's Period Drama","The Singers","Two People Exchanging Saliva"],
-  "Best Makeup & Hairstyling":["Sinners","Frankenstein","Kokuho","The Smashing Machine","The Ugly Stepsister"],
-  "Best Original Score":["Sinners","One Battle After Another","Blue Moon","Diane Warren: Relentless","Viva Verdi!"],
-  "Best Original Song":["Sinners","KPop Demon Hunters","Diane Warren: Relentless","Viva Verdi!"],
-  "Best Production Design":["Sinners","One Battle After Another","Marty Supreme","Hamnet"],
-  "Best Sound":["Sinners","One Battle After Another","Frankenstein","F1","Sirāt"],
-  "Best Visual Effects":["Sinners","Frankenstein","F1","Jurassic World Rebirth","The Lost Bus"],
-  "Best Adapted Screenplay":["One Battle After Another","Frankenstein","Marty Supreme","It Was Just An Accident","Train Dreams"],
-  "Best Original Screenplay":["Sinners","Sentimental Value","Hamnet","Bugonia"]
+  "Best Picture":[
+    "Bugonia",
+    "F1",
+    "Frankenstein",
+    "Hamnet",
+    "Marty Supreme",
+    "One Battle After Another",
+    "The Secret Agent",
+    "Sentimental Value",
+    "Sinners",
+    "Train Dreams"
+  ],
+  "Best Actor":[
+    "Timothée Chalamet — Marty Supreme",
+    "Leonardo DiCaprio — One Battle After Another",
+    "Ethan Hawke — Blue Moon",
+    "Michael B. Jordan — Sinners",
+    "Wagner Moura — The Secret Agent"
+  ],
+  "Best Actress":[
+    "Jessie Buckley — Hamnet",
+    "Rose Byrne — If I Had Legs I'd Kick You",
+    "Kate Hudson — Song Sung Blue",
+    "Renate Reinsve — Sentimental Value",
+    "Emma Stone — Bugonia"
+  ],
+  "Best Supporting Actor":[
+    "Benicio Del Toro — One Battle After Another",
+    "Jacob Elordi — Frankenstein",
+    "Delroy Lindo — Sinners",
+    "Sean Penn — One Battle After Another",
+    "Stellan Skarsgård — Sentimental Value"
+  ],
+  "Best Supporting Actress":[
+    "Elle Fanning — Sentimental Value",
+    "Inga Ibsdotter Lilleaas — Sentimental Value",
+    "Amy Madigan — Weapons",
+    "Wunmi Mosaku — Sinners",
+    "Teyana Taylor — One Battle After Another"
+  ],
+  "Best Director":[
+    "Chloé Zhao — Hamnet",
+    "Josh Safdie — Marty Supreme",
+    "Paul Thomas Anderson — One Battle After Another",
+    "Joachim Trier — Sentimental Value",
+    "Ryan Coogler — Sinners"
+  ],
+  "Best Animated Feature":[
+    "Arco",
+    "Elio",
+    "KPop Demon Hunters",
+    "Little Amélie or the Character of Rain",
+    "Zootopia 2"
+  ],
+  "Best Animated Short":[
+    "Butterfly",
+    "Forevergreen",
+    "The Girl Who Cried Pearls",
+    "Retirement Plan",
+    "The Three Sisters"
+  ],
+  "Best Casting":[
+    "Hamnet — Nina Gold",
+    "Marty Supreme — Jennifer Venditti",
+    "One Battle After Another — Cassandra Kulukundis",
+    "The Secret Agent — Gabriel Domingues",
+    "Sinners — Francine Maisler"
+  ],
+  "Best Cinematography":[
+    "Frankenstein — Dan Laustsen",
+    "Marty Supreme — Darius Khondji",
+    "One Battle After Another — Michael Bauman",
+    "Sinners — Autumn Durald Arkapaw",
+    "Train Dreams — Adolpho Veloso"
+  ],
+  "Best Costume Design":[
+    "Avatar: Fire and Ash — Deborah L. Scott",
+    "Frankenstein — Kate Hawley",
+    "Hamnet — Malgosia Turzanska",
+    "Marty Supreme — Miyako Bellizzi",
+    "Sinners — Ruth E. Carter"
+  ],
+  "Best Documentary Feature":[
+    "The Alabama Solution",
+    "Come See Me in the Good Light",
+    "Cutting Through Rocks",
+    "Mr. Nobody Against Putin",
+    "The Perfect Neighbor"
+  ],
+  "Best Documentary Short":[
+    "All the Empty Rooms",
+    "Armed Only With a Camera: The Life and Death of Brent Renaud",
+    "Children No More: Were and Are Gone",
+    "The Devil Is Busy",
+    "Perfectly a Strangeness"
+  ],
+  "Best Film Editing":[
+    "F1 — Stephen Mirrione",
+    "Marty Supreme — Ronald Bronstein & Josh Safdie",
+    "One Battle After Another — Andy Jurgensen",
+    "Sentimental Value — Olivier Bugge Coutté",
+    "Sinners — Michael P. Shawver"
+  ],
+  "Best International Feature":[
+    "The Secret Agent (Brazil)",
+    "It Was Just an Accident (France)",
+    "Sentimental Value (Norway)",
+    "Sirāt (Spain)",
+    "The Voice of Hind Rajab (Tunisia)"
+  ],
+  "Best Live-Action Short":[
+    "Butcher's Stain",
+    "A Friend of Dorothy",
+    "Jane Austen's Period Drama",
+    "The Singers",
+    "Two People Exchanging Saliva"
+  ],
+  "Best Makeup & Hairstyling":[
+    "Frankenstein",
+    "Kokuho",
+    "Sinners",
+    "The Smashing Machine",
+    "The Ugly Stepsister"
+  ],
+  "Best Original Score":[
+    "Bugonia — Jerskin Fendrix",
+    "Frankenstein — Alexandre Desplat",
+    "Hamnet — Max Richter",
+    "One Battle After Another — Jonny Greenwood",
+    "Sinners — Ludwig Goransson"
+  ],
+  "Best Original Song":[
+    "Dear Me — Diane Warren: Relentless",
+    "Golden — KPop Demon Hunters",
+    "I Lied To You — Sinners",
+    "Sweet Dreams Of Joy — Viva Verdi!",
+    "Train Dreams — Train Dreams"
+  ],
+  "Best Production Design":[
+    "Frankenstein",
+    "Hamnet",
+    "Marty Supreme",
+    "One Battle After Another",
+    "Sinners"
+  ],
+  "Best Sound":[
+    "F1",
+    "Frankenstein",
+    "One Battle After Another",
+    "Sinners",
+    "Sirāt"
+  ],
+  "Best Visual Effects":[
+    "Avatar: Fire and Ash",
+    "F1",
+    "Jurassic World Rebirth",
+    "The Lost Bus",
+    "Sinners"
+  ],
+  "Best Adapted Screenplay":[
+    "Bugonia — Will Tracy",
+    "Frankenstein — Guillermo del Toro",
+    "Hamnet — Chloé Zhao & Maggie O'Farrell",
+    "One Battle After Another — Paul Thomas Anderson",
+    "Train Dreams — Clint Bentley & Greg Kwedar"
+  ],
+  "Best Original Screenplay":[
+    "Blue Moon — Robert Kaplow",
+    "It Was Just an Accident — Jafar Panahi",
+    "Marty Supreme — Ronald Bronstein & Josh Safdie",
+    "Sentimental Value — Eskil Vogt & Joachim Trier",
+    "Sinners — Ryan Coogler"
+  ]
 };
 const CAT_NAMES=Object.keys(CATS);
 const COLORS=['#c9a84c','#5ba3cc','#9e6ecf','#4db87a','#e06060','#e09a50','#50c8c8','#c8a87a'];
