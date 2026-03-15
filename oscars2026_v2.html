@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Oscars 2026 — Live Bracket</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold:#c9a84c; --gold-l:#e8cc7a; --gold-d:#6b5520;
+  --black:#080706; --card:#111009; --card2:#181410;
+  --border:#2a2218; --text:#e8dcc8; --muted:#6a5e4e;
+  --red:#9b2335; --blue:#5ba3cc; --green:#4db87a;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--black);color:var(--text);
+  font-family:'DM Mono',monospace;min-height:100vh;
+  background-image:radial-gradient(ellipse 60% 40% at 10% 0%,rgba(201,168,76,.07) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 60% at 90% 100%,rgba(155,35,53,.05) 0%,transparent 60%);
+}
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+  opacity:.5;
+}
+.screen{display:none;} .screen.active{display:block;}
+
+/* HEADER */
+.hdr{text-align:center;padding:2.5rem 1.5rem 1.5rem;border-bottom:1px solid var(--border);
+  background:linear-gradient(180deg,rgba(201,168,76,.05) 0%,transparent 100%);}
+.hdr-pre{font-size:.58rem;letter-spacing:.5em;color:var(--gold-d);margin-bottom:1rem;}
+.hdr h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,7vw,4.5rem);
+  font-weight:900;color:var(--gold);text-shadow:0 0 60px rgba(201,168,76,.25);
+  letter-spacing:.04em;line-height:1;}
+.hdr-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;
+  color:var(--muted);margin-top:.4rem;letter-spacing:.2em;}
+.hdr-badge{display:inline-flex;align-items:center;gap:.5rem;margin-top:.8rem;
+  background:rgba(201,168,76,.1);border:1px solid var(--gold-d);
+  color:var(--gold);font-size:.6rem;letter-spacing:.25em;padding:.3rem 1rem;text-transform:uppercase;}
+
+/* LAYOUT */
+.wrap{max-width:520px;margin:0 auto;padding:2rem 1.5rem;}
+.field{margin-bottom:1.25rem;}
+.label{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+  margin-bottom:.45rem;display:block;}
+
+/* INPUTS */
+input[type=text],input[type=password]{
+  width:100%;background:var(--card2);border:1px solid var(--border);
+  color:var(--text);font-family:'DM Mono',monospace;font-size:.88rem;
+  padding:.75rem 1rem;outline:none;transition:border-color .2s;
+  -webkit-appearance:none;border-radius:0;letter-spacing:.05em;
+}
+input:focus{border-color:var(--gold-d);}
+input::placeholder{color:var(--muted);}
+
+/* BUTTONS */
+.btn{background:transparent;border:1px solid var(--gold-d);color:var(--gold);
+  font-family:'DM Mono',monospace;font-size:.72rem;letter-spacing:.15em;
+  padding:.65rem 1.5rem;cursor:pointer;text-transform:uppercase;transition:all .2s;
+  -webkit-appearance:none;border-radius:0;display:inline-block;text-align:center;}
+.btn:hover{background:rgba(201,168,76,.1);border-color:var(--gold);}
+.btn:disabled{opacity:.3;cursor:not-allowed;}
+.btn-gold{background:var(--gold);color:var(--black);border-color:var(--gold);font-weight:500;}
+.btn-gold:hover{background:var(--gold-l);border-color:var(--gold-l);}
+.btn-red{background:var(--red);color:#fff;border-color:var(--red);}
+.btn-red:hover{filter:brightness(1.1);}
+.btn-green{background:#2d7a4f;color:#fff;border-color:#2d7a4f;}
+.btn-green:hover{filter:brightness(1.1);}
+.btn-full{width:100%;display:block;}
+.btn-sm{padding:.38rem .85rem;font-size:.62rem;}
+
+/* ROOM CODE */
+.code-display{
+  font-family:'Playfair Display',serif;font-size:3.5rem;font-weight:900;
+  color:var(--gold);letter-spacing:.3em;text-align:center;
+  padding:1.5rem;background:rgba(201,168,76,.06);border:1px solid var(--gold-d);
+  margin:1rem 0;text-shadow:0 0 30px rgba(201,168,76,.2);
+}
+.code-input{
+  text-align:center;font-size:1.5rem;letter-spacing:.4em;text-transform:uppercase;
+  font-weight:500;
+}
+
+/* ROLE TOGGLE */
+.role-toggle{display:flex;border:1px solid var(--border);margin-bottom:1.5rem;overflow:hidden;}
+.role-btn{flex:1;padding:.65rem;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;
+  cursor:pointer;background:transparent;border:none;color:var(--muted);
+  font-family:'DM Mono',monospace;transition:all .2s;}
+.role-btn.active{background:rgba(201,168,76,.12);color:var(--gold);}
+
+/* PLAYER LIST */
+.player-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.6rem;margin-top:1rem;}
+.player-chip{background:var(--card2);border:1px solid var(--border);
+  padding:.65rem .9rem;display:flex;align-items:center;gap:.6rem;}
+.pchip-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.pchip-name{font-size:.78rem;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pchip-status{font-size:.6rem;color:var(--muted);}
+.player-chip.done .pchip-status{color:var(--green);}
+
+/* BRACKET TOP BAR */
+.bracket-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.75rem 1.25rem;border-bottom:1px solid var(--border);
+  flex-wrap:wrap;gap:.6rem;position:sticky;top:0;z-index:100;
+  background:rgba(8,7,6,.92);backdrop-filter:blur(10px);
+}
+.bar-player{display:flex;align-items:center;gap:.6rem;}
+.bar-dot{width:9px;height:9px;border-radius:50%;}
+.bar-name{font-size:.8rem;}
+.bar-role{font-size:.58rem;color:var(--gold);}
+.mode-tabs{display:flex;border:1px solid var(--border);overflow:hidden;}
+.mode-tab{padding:.42rem .85rem;font-size:.62rem;letter-spacing:.08em;cursor:pointer;
+  background:transparent;border:none;color:var(--muted);font-family:'DM Mono',monospace;
+  transition:all .2s;white-space:nowrap;}
+.mode-tab.act-p{background:rgba(201,168,76,.15);color:var(--gold);}
+.mode-tab.act-s{background:rgba(91,163,204,.12);color:var(--blue);}
+.prog-wrap{display:flex;align-items:center;gap:.6rem;}
+.prog-bar{width:80px;height:2px;background:var(--border);overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--gold-d),var(--gold));transition:width .4s;}
+.prog-lbl{font-size:.6rem;color:var(--muted);}
+
+/* CAT GRID */
+.cats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:1.1rem;padding:1.25rem;}
+.cat-card{background:var(--card);border:1px solid var(--border);position:relative;overflow:hidden;}
+.cat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,var(--gold-d),transparent);}
+.cat-head{padding:.55rem .85rem;border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;}
+.cat-name{font-family:'Cormorant Garamond',serif;font-size:.9rem;font-weight:600;color:var(--gold);}
+.cat-tick{font-size:.75rem;color:var(--green);}
+.nom-list{padding:.4rem;}
+.nom{display:flex;align-items:center;gap:.45rem;padding:.38rem .45rem;
+  cursor:pointer;border:1px solid transparent;transition:all .13s;}
+.nom:hover{background:rgba(255,255,255,.025);border-color:var(--border);}
+.nom-name{font-size:.73rem;color:var(--text);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pdots{display:flex;gap:3px;flex-shrink:0;}
+.pdot{width:7px;height:7px;border-radius:50%;border:1px solid rgba(255,255,255,.08);transition:all .13s;}
+.pdot.on-p{border-color:var(--gold)!important;background:var(--gold)!important;}
+.pdot.on-s{border-color:var(--blue)!important;background:var(--blue)!important;}
+.nom.sel-p{background:rgba(201,168,76,.07);border-color:rgba(201,168,76,.25);}
+.nom.sel-s{background:rgba(91,163,204,.06);border-color:rgba(91,163,204,.2);}
+.nom.sel-b{background:linear-gradient(90deg,rgba(201,168,76,.07),rgba(91,163,204,.06));border-color:rgba(201,168,76,.3);}
+
+/* SUBMIT STICKY */
+.sticky-submit{position:sticky;bottom:0;padding:1rem 1.5rem 1.5rem;
+  background:linear-gradient(to top,var(--black) 55%,transparent);
+  display:flex;justify-content:center;gap:.75rem;flex-wrap:wrap;pointer-events:none;}
+.sticky-submit>*{pointer-events:all;}
+
+/* CEREMONY */
+.cer-layout{display:flex;min-height:calc(100vh - 160px);}
+.cer-sidebar{width:260px;flex-shrink:0;border-right:1px solid var(--border);
+  overflow-y:auto;position:sticky;top:0;max-height:100vh;}
+.sb-head{padding:.65rem 1rem;border-bottom:1px solid var(--border);
+  font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);}
+.cat-item{padding:.55rem 1rem;border-bottom:1px solid rgba(42,34,24,.4);
+  cursor:pointer;transition:background .15s;display:flex;align-items:center;gap:.5rem;}
+.cat-item:hover{background:rgba(255,255,255,.02);}
+.cat-item.act{background:rgba(201,168,76,.08);border-left:2px solid var(--gold);}
+.cat-item.done{opacity:.5;}
+.cat-item-name{font-size:.73rem;flex:1;}
+.cat-item-icon{font-size:.65rem;}
+.cer-main{flex:1;padding:1.75rem;overflow-y:auto;}
+
+/* REVEAL STAGE */
+.rev-title{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3.5vw,2.2rem);
+  color:var(--gold);margin-bottom:.25rem;}
+.rev-sub{font-size:.65rem;color:var(--muted);letter-spacing:.2em;margin-bottom:1.5rem;}
+.nom-rows{display:flex;flex-direction:column;gap:.45rem;margin-bottom:1.5rem;}
+.nom-row{background:var(--card);border:1px solid var(--border);padding:.8rem 1rem;
+  position:relative;overflow:hidden;transition:all .3s;}
+.nom-row::before{content:'';position:absolute;top:0;left:0;bottom:0;width:2px;background:var(--border);}
+.nom-film{font-size:.85rem;margin-bottom:.3rem;}
+.picks-row{display:flex;gap:.4rem;flex-wrap:wrap;}
+.pchip{font-size:.62rem;padding:.18rem .55rem;display:flex;align-items:center;gap:.3rem;}
+.pchip.predict{background:rgba(201,168,76,.12);color:var(--gold);border:1px solid rgba(201,168,76,.2);}
+.pchip.personal{background:rgba(91,163,204,.1);color:var(--blue);border:1px solid rgba(91,163,204,.2);}
+.pchip-dot{width:5px;height:5px;border-radius:50%;}
+.nom-row.hidden .picks-row{filter:blur(5px);user-select:none;pointer-events:none;}
+.nom-row.winner{border-color:var(--gold);background:linear-gradient(90deg,rgba(201,168,76,.1),rgba(201,168,76,.03));}
+.nom-row.winner::before{background:var(--gold);width:3px;}
+.crown{position:absolute;right:.75rem;top:.75rem;font-size:1rem;}
+@keyframes revFlash{0%{background:rgba(201,168,76,.25);}100%{background:transparent;}}
+.nom-row.flash{animation:revFlash .7s ease;}
+.locked-msg{text-align:center;padding:2.5rem 1rem;color:var(--muted);font-size:.8rem;
+  border:1px solid var(--border);line-height:1.8;}
+
+/* HOST CONTROLS */
+.hctl{margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border);}
+.hctl-label{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:.65rem;}
+.winner-opts{display:flex;flex-wrap:wrap;gap:.4rem;}
+.wopt{padding:.38rem .85rem;font-size:.7rem;cursor:pointer;
+  background:var(--card2);border:1px solid var(--border);color:var(--text);
+  font-family:'DM Mono',monospace;transition:all .18s;}
+.wopt:hover{border-color:var(--gold-d);color:var(--gold);}
+.wopt.sel{background:rgba(201,168,76,.14);border-color:var(--gold);color:var(--gold);}
+.host-btn-row{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1rem;}
+
+/* LEADERBOARD */
+.lb{margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border);}
+.lb-title{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--gold);margin-bottom:1rem;}
+.lb-row{display:flex;align-items:center;gap:.9rem;padding:.8rem 1rem;
+  background:var(--card);border:1px solid var(--border);margin-bottom:.4rem;
+  position:relative;overflow:hidden;transition:all .3s;}
+.lb-bar-bg{position:absolute;left:0;top:0;bottom:0;background:rgba(201,168,76,.04);z-index:0;transition:width .6s;}
+.lb-row>*{position:relative;z-index:1;}
+.lb-rank{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--gold-d);width:1.8rem;text-align:center;}
+.lb-rank.top{color:var(--gold);}
+.lb-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.lb-name{flex:1;font-size:.82rem;}
+.lb-score{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--gold);}
+.lb-of{font-size:.6rem;color:var(--muted);}
+.lb-row.first{border-color:var(--gold);background:rgba(201,168,76,.05);}
+
+/* TOAST */
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(5rem);
+  background:var(--card2);border:1px solid var(--gold-d);color:var(--text);
+  font-size:.73rem;padding:.65rem 1.4rem;z-index:10000;transition:transform .3s;
+  white-space:nowrap;box-shadow:0 4px 24px rgba(0,0,0,.5);}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+/* MISC */
+.divider{height:1px;background:var(--border);margin:1.25rem 0;}
+.err{color:#e05;font-size:.7rem;margin-top:.5rem;display:none;}
+.info{font-size:.72rem;color:var(--muted);line-height:1.8;margin-bottom:1rem;}
+.flex-between{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.6rem;}
+.all-done-banner{background:rgba(77,184,122,.07);border:1px solid rgba(77,184,122,.25);
+  padding:.65rem 1rem;display:flex;align-items:center;gap:.65rem;
+  font-size:.75rem;color:var(--green);margin-bottom:1.25rem;}
+.session-info{background:var(--card2);border:1px solid var(--border);padding:.75rem 1rem;
+  font-size:.72rem;margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between;}
+.session-code{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--gold);letter-spacing:.2em;}
+
+/* CONFETTI */
+.confetti-piece{position:fixed;pointer-events:none;z-index:9998;border-radius:1px;
+  animation:cfall 2.5s ease-in forwards;}
+@keyframes cfall{0%{transform:translateY(-20px) rotate(0deg);opacity:1;}
+  100%{transform:translateY(100vh) rotate(720deg);opacity:0;}}
+
+/* ANIM */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.cat-card{animation:fadeUp .3s ease both;}
+.cat-card:nth-child(2n){animation-delay:.04s;}
+.cat-card:nth-child(3n){animation-delay:.08s;}
+
+/* MOBILE */
+@media(max-width:680px){
+  .cer-layout{flex-direction:column;}
+  .cer-sidebar{width:100%;max-height:200px;position:static;}
+  .cats-grid{grid-template-columns:1fr;}
+  .prog-bar{width:50px;}
+}
+
+/* SETUP GUIDE */
+.setup-guide{max-width:680px;margin:3rem auto;padding:2rem 1.5rem;}
+.setup-guide h2{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--gold);margin-bottom:.75rem;}
+.setup-guide p{font-size:.78rem;color:var(--muted);line-height:1.9;margin-bottom:1rem;}
+pre.sql{background:var(--card);border:1px solid var(--border);padding:1.25rem;
+  font-size:.7rem;line-height:1.9;overflow-x:auto;color:var(--gold-l);white-space:pre-wrap;}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ SCREEN: HOME ═══════════════════ -->
+<div class="screen active" id="screen-home">
+  <div class="hdr">
+    <div class="hdr-pre">✦ 98th Academy Awards · 2026 ✦</div>
+    <h1>OSCAR BRACKET</h1>
+    <div class="hdr-sub">Predict · Compete · Celebrate Cinema</div>
+  </div>
+  <div class="wrap">
+    <div class="role-toggle">
+      <button class="role-btn active" id="role-player" onclick="setRole('player')">🎬 Join a Game</button>
+      <button class="role-btn" id="role-host" onclick="setRole('host')">🎙️ Host a Game</button>
+    </div>
+
+    <!-- JOIN PANEL -->
+    <div id="join-panel">
+      <div class="field">
+        <label class="label">Your Name</label>
+        <input type="text" id="join-name" placeholder="e.g. Alex" maxlength="30"/>
+      </div>
+      <div class="field">
+        <label class="label">Room Code</label>
+        <input type="text" id="join-code" class="code-input" placeholder="ABCD" maxlength="4"/>
+      </div>
+      <button class="btn btn-gold btn-full" onclick="joinRoom()">Join Game →</button>
+    </div>
+
+    <!-- HOST PANEL -->
+    <div id="host-panel" style="display:none;">
+      <div class="field">
+        <label class="label">Your Name</label>
+        <input type="text" id="host-name" placeholder="e.g. Sarah (Host)" maxlength="30"/>
+      </div>
+      <div class="field">
+        <label class="label">Host Password <span style="color:var(--muted);font-size:.6rem;">(protects your host controls)</span></label>
+        <input type="password" id="host-pass" placeholder="Create a password"/>
+      </div>
+      <button class="btn btn-gold btn-full" onclick="createRoom()">Create Room →</button>
+    </div>
+
+    <div class="err" id="home-err"></div>
+
+    <div class="divider"></div>
+    <div class="info">Each room gets a unique 4-letter code. Share it with friends so they can join your game. You can play as many test rounds as you like — each room is completely separate.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════ SCREEN: ROOM CREATED ═══════════════════ -->
+<div class="screen" id="screen-room-created">
+  <div class="hdr">
+    <div class="hdr-pre">✦ Room Created ✦</div>
+    <h1>OSCAR BRACKET</h1>
+    <div class="hdr-sub">Share this code with your players</div>
+  </div>
+  <div class="wrap">
+    <div class="label">Your Room Code</div>
+    <div class="code-display" id="room-code-display">----</div>
+    <div class="info" style="text-align:center;">Share this code with everyone who's playing. They enter it on the home screen to join your room.</div>
+    <button class="btn btn-gold btn-full" onclick="goToBracket()">Fill My Picks →</button>
+    <div style="margin-top:.75rem;">
+      <button class="btn btn-full" onclick="goToLobby()">View Lobby →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ SCREEN: LOBBY ═══════════════════ -->
+<div class="screen" id="screen-lobby">
+  <div class="hdr">
+    <div class="hdr-pre">✦ 98th Academy Awards · 2026 ✦</div>
+    <h1>OSCAR BRACKET</h1>
+  </div>
+  <div style="padding:1.5rem;">
+    <div class="session-info">
+      <div>
+        <div style="font-size:.6rem;color:var(--muted);letter-spacing:.2em;margin-bottom:.2rem;">ROOM CODE</div>
+        <div class="session-code" id="lobby-code">----</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:.6rem;color:var(--muted);margin-bottom:.3rem;">Share with friends</div>
+        <button class="btn btn-sm" onclick="copyCode()">Copy Code</button>
+      </div>
+    </div>
+
+    <div id="all-done-banner" class="all-done-banner" style="display:none;">
+      <span>✦</span><span>All players submitted — host can start the ceremony!</span>
+    </div>
+
+    <div class="flex-between" style="margin-bottom:.75rem;">
+      <div class="label" style="margin:0;">Players</div>
+      <div style="font-size:.6rem;color:var(--muted)" id="lobby-count">0 players</div>
+    </div>
+    <div class="player-grid" id="lobby-players"></div>
+
+    <div style="margin-top:1.5rem;display:flex;gap:.75rem;flex-wrap:wrap;" id="lobby-actions">
+      <button class="btn btn-gold" onclick="goToBracket()" id="lobby-picks-btn">Fill My Picks →</button>
+      <button class="btn btn-green" onclick="showScreen('screen-ceremony')" id="lobby-ceremony-btn" style="display:none;">Begin Ceremony →</button>
+      <button class="btn btn-red btn-sm" onclick="resetRoom()" id="lobby-reset-btn" style="display:none;">Reset Room</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ SCREEN: BRACKET ═══════════════════ -->
+<div class="screen" id="screen-bracket">
+  <div class="bracket-bar">
+    <div class="bar-player">
+      <div class="bar-dot" id="bar-dot"></div>
+      <div>
+        <div class="bar-name" id="bar-name"></div>
+        <div class="bar-role" id="bar-role"></div>
+      </div>
+    </div>
+    <div class="mode-tabs">
+      <button class="mode-tab act-p" id="tab-p" onclick="setMode('predict')">🏆 Predicted</button>
+      <button class="mode-tab" id="tab-s" onclick="setMode('personal')">❤️ Personal</button>
+    </div>
+    <div class="prog-wrap">
+      <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+      <div class="prog-lbl" id="prog-lbl">0/24</div>
+    </div>
+  </div>
+  <div class="cats-grid" id="cats-grid"></div>
+  <div class="sticky-submit">
+    <button class="btn btn-sm" onclick="goToLobby()">← Lobby</button>
+    <button class="btn btn-gold" onclick="submitPicks()" id="submit-btn">Submit All Picks →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════ SCREEN: CEREMONY ═══════════════════ -->
+<div class="screen" id="screen-ceremony">
+  <div class="hdr" style="padding:1.5rem;">
+    <div class="hdr-pre">✦ 98th Academy Awards · 2026 ✦</div>
+    <h1 style="font-size:clamp(1.8rem,5vw,3.5rem);">CEREMONY</h1>
+    <div id="cer-badge" class="hdr-badge" style="display:none;">🎙️ Host Controls Active</div>
+  </div>
+  <div class="cer-layout">
+    <div class="cer-sidebar">
+      <div class="sb-head">24 Categories</div>
+      <div id="cer-cat-list"></div>
+    </div>
+    <div class="cer-main">
+      <div id="reveal-stage">
+        <div class="locked-msg">← Select a category to reveal picks</div>
+      </div>
+      <div class="lb">
+        <div class="lb-title">Leaderboard</div>
+        <div id="lb-rows"></div>
+        <div style="font-size:.62rem;color:var(--muted);margin-top:.6rem;">🏆 = 1 point per correct Predicted Winner</div>
+      </div>
+    </div>
+  </div>
+  <div style="padding:1rem 1.5rem;">
+    <button class="btn btn-sm" onclick="goToLobby()">← Back to Lobby</button>
+  </div>
+</div>
+
+<!-- ═══════════════════ SCREEN: SETUP NEEDED ═══════════════════ -->
+<div class="screen" id="screen-setup">
+  <div class="setup-guide">
+    <h2>One-Time Setup Required</h2>
+    <p>Your Supabase database needs two tables. Go to your Supabase dashboard → <strong style="color:var(--text);">SQL Editor</strong> → paste and run this:</p>
+    <pre class="sql" id="setup-sql"></pre>
+    <p style="margin-top:1rem;">After running the SQL, reload this page.</p>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// SUPABASE
+// ══════════════════════════════════════════════════════════
+const SUPA_URL = 'https://pbcehiguwsswiwwxsrpp.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBiY2VoaWd1d3Nzd2l3d3hzcnBwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyMDY0OTQsImV4cCI6MjA4ODc4MjQ5NH0.V_uCI-fy4t8A6p4H90qVeSYxXGJLkMpzCNDGefJ7aIs';
+const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+
+// ══════════════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════════════
+const CATS = {
+  "Best Picture":["Sinners","One Battle After Another","Frankenstein","Marty Supreme","Sentimental Value","Hamnet","Bugonia","F1","The Secret Agent","Train Dreams"],
+  "Best Actor":["Sinners","One Battle After Another","Marty Supreme","The Secret Agent","Blue Moon"],
+  "Best Actress":["Sentimental Value","Hamnet","Bugonia","If I Had Legs I'd Kick You","Song Sung Blue"],
+  "Best Supporting Actor":["Sinners","One Battle After Another","Frankenstein","Sentimental Value","Weapons"],
+  "Best Supporting Actress":["Sinners","One Battle After Another","Sentimental Value","Hamnet"],
+  "Best Director":["Sinners","One Battle After Another","Marty Supreme","Sentimental Value","Hamnet"],
+  "Best Animated Feature":["KPop Demon Hunters","Arco","Elio","Little Amélie","Zootopia 2"],
+  "Best Animated Short":["Butterflies","Forevergreen","The Girl Who Cried Pearls","Retirement Plan","The Three Sisters"],
+  "Best Casting":["Sinners","One Battle After Another","Marty Supreme","The Secret Agent"],
+  "Best Cinematography":["Sinners","One Battle After Another","Frankenstein","Marty Supreme","Train Dreams"],
+  "Best Costume Design":["Sinners","Frankenstein","Marty Supreme","Hamnet","Avatar: Fire and Ash"],
+  "Best Documentary Feature":["Cutting Through the Rocks","Come See Me in the Good Light","Mr. Nobody Against Putin","The Alabama Solution","The Perfect Neighbor"],
+  "Best Documentary Short":["All the Empty Rooms","Armed Only With A Camera","Children No More","The Devil is Busy","Perfectly a Strangeness"],
+  "Best Film Editing":["Sinners","One Battle After Another","Sentimental Value","Marty Supreme","F1"],
+  "Best International Feature":["Sentimental Value","The Secret Agent","It Was Just An Accident","The Voice of Hind Rajab","Sirāt"],
+  "Best Live-Action Short":["Butcher's Stain","A Friend of Dorothy","Jane Austen's Period Drama","The Singers","Two People Exchanging Saliva"],
+  "Best Makeup & Hairstyling":["Sinners","Frankenstein","Kokuho","The Smashing Machine","The Ugly Stepsister"],
+  "Best Original Score":["Sinners","One Battle After Another","Blue Moon","Diane Warren: Relentless","Viva Verdi!"],
+  "Best Original Song":["Sinners","KPop Demon Hunters","Diane Warren: Relentless","Viva Verdi!"],
+  "Best Production Design":["Sinners","One Battle After Another","Marty Supreme","Hamnet"],
+  "Best Sound":["Sinners","One Battle After Another","Frankenstein","F1","Sirāt"],
+  "Best Visual Effects":["Sinners","Frankenstein","F1","Jurassic World Rebirth","The Lost Bus"],
+  "Best Adapted Screenplay":["One Battle After Another","Frankenstein","Marty Supreme","It Was Just An Accident","Train Dreams"],
+  "Best Original Screenplay":["Sinners","Sentimental Value","Hamnet","Bugonia"]
+};
+const CAT_NAMES = Object.keys(CATS);
+const COLORS = ['#c9a84c','#5ba3cc','#9e6ecf','#4db87a','#e06060','#e09a50','#50c8c8','#c8a87a'];
+
+// ══════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════
+let myName='', myRole='player', myColor='', myRoomCode='';
+let myPicks={}, pickMode='predict';
+let roomData=null, allPlayers=[], activeCat=null;
+let realtimeChannel=null;
+
+// ══════════════════════════════════════════════════════════
+// HOME
+// ══════════════════════════════════════════════════════════
+function setRole(r){
+  myRole=r;
+  document.getElementById('role-player').classList.toggle('active',r==='player');
+  document.getElementById('role-host').classList.toggle('active',r==='host');
+  document.getElementById('join-panel').style.display=r==='player'?'block':'none';
+  document.getElementById('host-panel').style.display=r==='host'?'block':'none';
+}
+
+function genCode(){
+  const chars='ABCDEFGHJKLMNPQRSTUVWXYZ';
+  return Array.from({length:4},()=>chars[Math.floor(Math.random()*chars.length)]).join('');
+}
+
+async function createRoom(){
+  const name=document.getElementById('host-name').value.trim();
+  const pass=document.getElementById('host-pass').value.trim();
+  if(!name){showErr('home-err','Enter your name.');return;}
+  if(!pass){showErr('home-err','Set a host password.');return;}
+
+  let code=genCode();
+  for(let i=0;i<5;i++){
+    const {data}=await sb.from('rooms').select('code').eq('code',code).single();
+    if(!data) break;
+    code=genCode();
+  }
+
+  const color=COLORS[0];
+  const {error}=await sb.from('rooms').insert({
+    code, host_name:name, host_password:pass,
+    revealed_json:'{}', winners_json:'{}', active:true
+  });
+  if(error){
+    const msg=error.message||error.details||JSON.stringify(error);
+    showErr('home-err','Error: '+msg);
+    console.error('Room creation error:',error);
+    return;
+  }
+
+  // Add host as player
+  await sb.from('room_players').insert({
+    room_code:code, name, color, role:'host', submitted:false, picks_json:'{}'
+  });
+
+  myName=name; myRole='host'; myColor=color; myRoomCode=code;
+  myPicks={};
+  document.getElementById('room-code-display').textContent=code;
+  startRealtime();
+  await loadRoomData();
+  showScreen('screen-room-created');
+}
+
+async function joinRoom(){
+  const name=document.getElementById('join-name').value.trim();
+  const code=document.getElementById('join-code').value.trim().toUpperCase();
+  if(!name){showErr('home-err','Enter your name.');return;}
+  if(code.length!==4){showErr('home-err','Enter the 4-letter room code.');return;}
+
+  const {data:room}=await sb.from('rooms').select('*').eq('code',code).eq('active',true).single();
+  if(!room){showErr('home-err','Room not found. Check the code.');return;}
+
+  // Check if name taken in this room
+  const {data:existing}=await sb.from('room_players').select('*').eq('room_code',code).eq('name',name).single();
+
+  const usedColors=[];
+  const {data:rp}=await sb.from('room_players').select('color').eq('room_code',code);
+  (rp||[]).forEach(p=>usedColors.push(p.color));
+  const color=COLORS.find(c=>!usedColors.includes(c))||COLORS[usedColors.length%COLORS.length];
+
+  if(existing){
+    myName=existing.name; myColor=existing.color; myRole=existing.role||'player';
+    myPicks=existing.picks_json?JSON.parse(existing.picks_json):{};
+  } else {
+    await sb.from('room_players').insert({
+      room_code:code, name, color, role:'player', submitted:false, picks_json:'{}'
+    });
+    myName=name; myColor=color; myRole='player'; myPicks={};
+  }
+  myRoomCode=code;
+  startRealtime();
+  await loadRoomData();
+
+  if(existing&&existing.submitted){
+    goToLobby();
+  } else {
+    goToLobby();
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+// ROOM DATA
+// ══════════════════════════════════════════════════════════
+async function loadRoomData(){
+  const {data:room}=await sb.from('rooms').select('*').eq('code',myRoomCode).single();
+  roomData=room;
+  const {data:players}=await sb.from('room_players').select('*').eq('room_code',myRoomCode).order('name');
+  allPlayers=players||[];
+}
+
+// ══════════════════════════════════════════════════════════
+// REALTIME
+// ══════════════════════════════════════════════════════════
+function startRealtime(){
+  if(realtimeChannel) sb.removeChannel(realtimeChannel);
+  realtimeChannel=sb.channel('room-'+myRoomCode)
+    .on('postgres_changes',{event:'*',schema:'public',table:'room_players',filter:`room_code=eq.${myRoomCode}`},async()=>{
+      await loadRoomData(); refreshScreen();
+    })
+    .on('postgres_changes',{event:'*',schema:'public',table:'rooms',filter:`code=eq.${myRoomCode}`},async()=>{
+      await loadRoomData(); refreshScreen();
+    })
+    .subscribe();
+}
+
+function refreshScreen(){
+  const id=document.querySelector('.screen.active')?.id;
+  if(id==='screen-lobby') renderLobby();
+  if(id==='screen-ceremony') renderCeremony();
+}
+
+// ══════════════════════════════════════════════════════════
+// LOBBY
+// ══════════════════════════════════════════════════════════
+function goToLobby(){
+  renderLobby();
+  showScreen('screen-lobby');
+}
+
+function renderLobby(){
+  document.getElementById('lobby-code').textContent=myRoomCode;
+  const allDone=allPlayers.length>0&&allPlayers.every(p=>p.submitted);
+  document.getElementById('all-done-banner').style.display=allDone?'flex':'none';
+  document.getElementById('lobby-count').textContent=allPlayers.length+' player'+(allPlayers.length!==1?'s':'');
+  document.getElementById('lobby-players').innerHTML=allPlayers.map(p=>`
+    <div class="player-chip ${p.submitted?'done':''}">
+      <div class="pchip-dot" style="background:${p.color}"></div>
+      <div>
+        <div class="pchip-name">${p.name}${p.name===myName?' (you)':''}</div>
+        <div class="pchip-status">${p.submitted?'✓ submitted':'pending…'}</div>
+      </div>
+    </div>
+  `).join('');
+  // My submitted status
+  const me=allPlayers.find(p=>p.name===myName);
+  document.getElementById('lobby-picks-btn').textContent=me?.submitted?'Edit Picks →':'Fill My Picks →';
+  document.getElementById('lobby-ceremony-btn').style.display=myRole==='host'?'flex':'none';
+  document.getElementById('lobby-reset-btn').style.display=myRole==='host'?'inline-block':'none';
+}
+
+function copyCode(){
+  navigator.clipboard.writeText(myRoomCode).then(()=>toast('Room code copied!')).catch(()=>{
+    // fallback
+    const el=document.createElement('input');
+    el.value=myRoomCode; document.body.appendChild(el);
+    el.select(); document.execCommand('copy'); document.body.removeChild(el);
+    toast('Code: '+myRoomCode);
+  });
+}
+
+async function resetRoom(){
+  if(!confirm('Reset this room? All picks and results will be cleared.')) return;
+  await sb.from('room_players').delete().eq('room_code',myRoomCode);
+  await sb.from('rooms').update({revealed_json:'{}',winners_json:'{}'}).eq('code',myRoomCode);
+  // Re-add host
+  await sb.from('room_players').insert({
+    room_code:myRoomCode,name:myName,color:myColor,role:'host',submitted:false,picks_json:'{}'
+  });
+  myPicks={};
+  await loadRoomData();
+  renderLobby();
+  toast('Room reset!');
+}
+
+// ══════════════════════════════════════════════════════════
+// BRACKET
+// ══════════════════════════════════════════════════════════
+function goToBracket(){
+  buildBracket();
+  showScreen('screen-bracket');
+}
+
+function buildBracket(){
+  document.getElementById('bar-dot').style.background=myColor;
+  document.getElementById('bar-name').textContent=myName;
+  document.getElementById('bar-role').textContent=myRole==='host'?'🎙️ Host':'🎬 Player';
+  const grid=document.getElementById('cats-grid');
+  grid.innerHTML=CAT_NAMES.map(cat=>`
+    <div class="cat-card" id="cc-${sl(cat)}">
+      <div class="cat-head">
+        <span class="cat-name">${cat}</span>
+        <span class="cat-tick" id="ct-${sl(cat)}"></span>
+      </div>
+      <div class="nom-list">
+        ${CATS[cat].map(film=>`
+          <div class="nom" id="n-${sl(cat)}-${sl(film)}" onclick="pickNom('${es(cat)}','${es(film)}')">
+            <span class="nom-name">${film}</span>
+            <div class="pdots">
+              <div class="pdot" id="dp-${sl(cat)}-${sl(film)}" style="border-color:${myColor}35"></div>
+              <div class="pdot" id="ds-${sl(cat)}-${sl(film)}" style="border-color:#5ba3cc35"></div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+  setMode('predict');
+  redrawNoms();
+  updateProg();
+}
+
+function setMode(m){
+  pickMode=m;
+  document.getElementById('tab-p').className='mode-tab'+(m==='predict'?' act-p':'');
+  document.getElementById('tab-s').className='mode-tab'+(m==='personal'?' act-s':'');
+}
+
+function pickNom(cat,film){
+  if(!myPicks[cat]) myPicks[cat]={};
+  myPicks[cat][pickMode]=film;
+  redrawNoms();
+  updateProg();
+  // auto-save draft
+  sb.from('room_players').update({picks_json:JSON.stringify(myPicks)})
+    .eq('room_code',myRoomCode).eq('name',myName);
+}
+
+function redrawNoms(){
+  CAT_NAMES.forEach(cat=>{
+    const cp=myPicks[cat]||{};
+    CATS[cat].forEach(film=>{
+      const row=document.getElementById(`n-${sl(cat)}-${sl(film)}`);
+      const dp=document.getElementById(`dp-${sl(cat)}-${sl(film)}`);
+      const ds=document.getElementById(`ds-${sl(cat)}-${sl(film)}`);
+      if(!row) return;
+      const ip=cp.predict===film, is=cp.personal===film;
+      row.className='nom'+(ip&&is?' sel-b':ip?' sel-p':is?' sel-s':'');
+      if(dp){dp.className='pdot'+(ip?' on-p':'');dp.style.borderColor=ip?myColor:myColor+'35';dp.style.background=ip?myColor:'';}
+      if(ds){ds.className='pdot'+(is?' on-s':'');}
+    });
+    const tick=document.getElementById(`ct-${sl(cat)}`);
+    if(tick) tick.textContent=(cp.predict&&cp.personal)?'✓':(cp.predict||cp.personal)?'·':'';
+  });
+}
+
+function updateProg(){
+  const filled=CAT_NAMES.filter(c=>myPicks[c]?.predict&&myPicks[c]?.personal).length;
+  document.getElementById('prog-fill').style.width=(filled/CAT_NAMES.length*100)+'%';
+  document.getElementById('prog-lbl').textContent=filled+'/'+CAT_NAMES.length;
+}
+
+async function submitPicks(){
+  const btn=document.getElementById('submit-btn');
+  btn.disabled=true; btn.textContent='Submitting…';
+  await sb.from('room_players').update({picks_json:JSON.stringify(myPicks),submitted:true})
+    .eq('room_code',myRoomCode).eq('name',myName);
+  await loadRoomData();
+  toast('Picks locked in! 🎬');
+  goToLobby();
+}
+
+// ══════════════════════════════════════════════════════════
+// CEREMONY
+// ══════════════════════════════════════════════════════════
+function renderCeremony(){
+  document.getElementById('cer-badge').style.display=myRole==='host'?'inline-flex':'none';
+  const revealed=roomData?JSON.parse(roomData.revealed_json||'{}'):{};
+  const winners=roomData?JSON.parse(roomData.winners_json||'{}'):{};
+
+  // Sidebar
+  document.getElementById('cer-cat-list').innerHTML=CAT_NAMES.map(cat=>`
+    <div class="cat-item ${activeCat===cat?'act':''} ${winners[cat]?'done':''}"
+      onclick="selectCat('${es(cat)}')">
+      <span class="cat-item-name">${cat}</span>
+      <span class="cat-item-icon">${winners[cat]?'🏆':revealed[cat]?'👁':''}</span>
+    </div>
+  `).join('');
+
+  if(activeCat) renderReveal(activeCat);
+  renderLB();
+}
+
+function selectCat(cat){
+  activeCat=cat;
+  renderReveal(cat);
+  document.querySelectorAll('.cat-item').forEach((el,i)=>{
+    el.classList.toggle('act',CAT_NAMES[i]===cat);
+  });
+}
+
+function renderReveal(cat){
+  const revealed=roomData?JSON.parse(roomData.revealed_json||'{}'):{};
+  const winners=roomData?JSON.parse(roomData.winners_json||'{}'):{};
+  const isRevealed=revealed[cat], winner=winners[cat];
+  const nominees=CATS[cat];
+
+  // Build picks map
+  const picksMap={};
+  allPlayers.forEach(p=>{
+    const pp=p.picks_json?JSON.parse(p.picks_json):{};
+    picksMap[p.name]={color:p.color,pick:pp[cat]||{}};
+  });
+
+  const stage=document.getElementById('reveal-stage');
+  stage.innerHTML=`
+    <div class="rev-title">${cat}</div>
+    <div class="rev-sub">✦ ${nominees.length} nominees</div>
+
+    ${myRole!=='host'&&!isRevealed?`<div class="locked-msg">🔒 The host hasn't revealed picks for this category yet.<br>Check back after the award is announced!</div>`:''}
+
+    <div class="nom-rows">
+      ${nominees.map(film=>{
+        const predPickers=allPlayers.filter(p=>picksMap[p.name]?.pick?.predict===film);
+        const persPickers=allPlayers.filter(p=>picksMap[p.name]?.pick?.personal===film);
+        const isWin=winner===film;
+        return `
+          <div class="nom-row ${isWin?'winner':''} ${!isRevealed?'hidden':''}" id="nr-${sl(cat)}-${sl(film)}">
+            ${isWin?'<div class="crown">🏆</div>':''}
+            <div class="nom-film">${film}</div>
+            <div class="picks-row">
+              ${predPickers.map(p=>`<div class="pchip predict"><div class="pchip-dot" style="background:${p.color}"></div>${p.name} 🏆</div>`).join('')}
+              ${persPickers.map(p=>`<div class="pchip personal"><div class="pchip-dot" style="background:${p.color}"></div>${p.name} ❤️</div>`).join('')}
+              ${predPickers.length===0&&persPickers.length===0&&isRevealed?`<span style="font-size:.62rem;color:var(--muted)">No picks</span>`:''}
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+
+    ${myRole==='host'?`
+      <div class="host-btn-row">
+        ${!isRevealed
+          ?`<button class="btn btn-gold" onclick="revealCat('${es(cat)}')">👁 Reveal Picks</button>`
+          :`<span style="font-size:.68rem;color:var(--green);">✓ Picks revealed</span>`
+        }
+      </div>
+      ${isRevealed?`
+        <div class="hctl">
+          <div class="hctl-label">Mark Actual Oscar Winner</div>
+          <div class="winner-opts">
+            ${nominees.map(film=>`
+              <div class="wopt ${winner===film?'sel':''}" onclick="markWinner('${es(cat)}','${es(film)}')">${film}</div>
+            `).join('')}
+          </div>
+        </div>
+      `:''}
+    `:''}
+  `;
+}
+
+async function revealCat(cat){
+  const revealed=roomData?JSON.parse(roomData.revealed_json||'{}'):{};
+  revealed[cat]=true;
+  await sb.from('rooms').update({revealed_json:JSON.stringify(revealed)}).eq('code',myRoomCode);
+  await loadRoomData();
+  // Animate
+  CATS[cat].forEach(film=>{
+    const row=document.getElementById(`nr-${sl(cat)}-${sl(film)}`);
+    if(row){row.classList.remove('hidden');row.classList.add('flash');}
+  });
+  toast('Picks revealed for: '+cat);
+}
+
+async function markWinner(cat,film){
+  const winners=roomData?JSON.parse(roomData.winners_json||'{}'):{};
+  winners[cat]=film;
+  await sb.from('rooms').update({winners_json:JSON.stringify(winners)}).eq('code',myRoomCode);
+  await loadRoomData();
+  confetti();
+  toast('🏆 Winner: '+film);
+  renderReveal(cat);
+  renderLB();
+  // Update sidebar
+  document.querySelectorAll('.cat-item').forEach((el,i)=>{
+    const c=CAT_NAMES[i];
+    const w=JSON.parse(roomData.winners_json||'{}');
+    el.querySelector('.cat-item-icon').textContent=w[c]?'🏆':JSON.parse(roomData.revealed_json||'{}')[c]?'👁':'';
+    el.classList.toggle('done',!!w[c]);
+  });
+}
+
+function renderLB(){
+  const winners=roomData?JSON.parse(roomData.winners_json||'{}'):{};
+  const markedCount=Object.keys(winners).length;
+  const scores=allPlayers.map(p=>{
+    const pp=p.picks_json?JSON.parse(p.picks_json):{};
+    let score=0;
+    CAT_NAMES.forEach(cat=>{if(winners[cat]&&pp[cat]?.predict===winners[cat])score++;});
+    return{name:p.name,color:p.color,score};
+  }).sort((a,b)=>b.score-a.score);
+  const maxS=scores[0]?.score||1;
+  document.getElementById('lb-rows').innerHTML=scores.map((s,i)=>`
+    <div class="lb-row ${i===0&&s.score>0?'first':''}">
+      <div class="lb-bar-bg" style="width:${maxS>0?s.score/maxS*100:0}%"></div>
+      <div class="lb-rank ${i<3?'top':''}">${i+1}</div>
+      <div class="lb-dot" style="background:${s.color}"></div>
+      <div class="lb-name">${s.name}</div>
+      <div>
+        <div class="lb-score">${s.score}</div>
+        <div class="lb-of">of ${markedCount} pts</div>
+      </div>
+    </div>
+  `).join('')||'<div style="color:var(--muted);font-size:.78rem;">No winners marked yet.</div>';
+}
+
+// ══════════════════════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════════════════════
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='screen-ceremony') renderCeremony();
+  if(id==='screen-lobby') renderLobby();
+}
+function sl(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');}
+function es(s){return s.replace(/'/g,"\\'");}
+function showErr(id,msg){const el=document.getElementById(id);el.textContent=msg;el.style.display='block';setTimeout(()=>el.style.display='none',4000);}
+let toastT;
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),3000);}
+function confetti(){
+  const cols=['#c9a84c','#e8cc7a','#fff','#5ba3cc','#4db87a'];
+  for(let i=0;i<45;i++){
+    const el=document.createElement('div');
+    el.className='confetti-piece';
+    const s=6+Math.random()*6;
+    el.style.cssText=`left:${Math.random()*100}vw;top:${-10-Math.random()*20}px;background:${cols[Math.floor(Math.random()*cols.length)]};animation-delay:${Math.random()*.8}s;animation-duration:${1.5+Math.random()*2}s;width:${s}px;height:${s}px;`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),4000);
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+// INIT — check tables exist
+// ══════════════════════════════════════════════════════════
+const SQL=`-- Run once in Supabase SQL Editor
+
+create table if not exists rooms (
+  code text primary key,
+  host_name text,
+  host_password text,
+  revealed_json text default '{}',
+  winners_json text default '{}',
+  active boolean default true,
+  created_at timestamptz default now()
+);
+
+create table if not exists room_players (
+  id uuid default gen_random_uuid() primary key,
+  room_code text references rooms(code) on delete cascade,
+  name text,
+  color text,
+  role text default 'player',
+  submitted boolean default false,
+  picks_json text default '{}',
+  created_at timestamptz default now(),
+  unique(room_code, name)
+);
+
+alter publication supabase_realtime add table rooms;
+alter publication supabase_realtime add table room_players;`;
+
+async function init(){
+  const {error}=await sb.from('rooms').select('code').limit(1);
+  if(error&&(error.code==='42P01'||error.message?.includes('does not exist'))){
+    document.getElementById('setup-sql').textContent=SQL;
+    showScreen('screen-setup');
+    return;
+  }
+  // Check URL for room code (shareable links)
+  const params=new URLSearchParams(window.location.search);
+  const code=params.get('room');
+  if(code){
+    document.getElementById('join-code').value=code.toUpperCase();
+    setRole('player');
+  }
+}
+init();
+</script>
+</body>
+</html>
